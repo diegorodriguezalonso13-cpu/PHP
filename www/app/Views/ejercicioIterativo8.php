@@ -74,6 +74,7 @@ declare(strict_types=1);
                     <?php }}?>
             </ul>
         </div>
+        //prueba de que ya no tengo que matarme mas
     <?php }; ?>
     <div class="col-12">
         <div class="card shadow mb-4">

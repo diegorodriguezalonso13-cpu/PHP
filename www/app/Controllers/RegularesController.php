@@ -105,7 +105,7 @@ class RegularesController extends BaseController
     }
 
     //Ejercicio 5 casi terminado, más abajo ejercicio 8
-    public function ejercicioIterativo8(string $json = '', array $errores = [], array $resultado = [],array $resultados=[]): void
+    public function ejercicioIterativo8(string $json = '', array $errores = [], array $resultado = [], array $resultados = []): void
     {
         $data = array(
             'titulo' => 'Ejercicios regulares',
@@ -114,7 +114,7 @@ class RegularesController extends BaseController
         $data['errores'] = $errores;
         $data['json'] = $json;
         $data['resultado'] = $resultado;
-        $data['resultados']=$resultados;
+        $data['resultados'] = $resultados;
         $this->view->showViews(array('templates/header.view.php', 'ejercicioIterativo8.php', 'templates/footer.view.php'), $data);
     }
     public function doEjercicioIterativo8(): void
@@ -136,7 +136,7 @@ class RegularesController extends BaseController
 
 
             $resultado = $this->procesarEjercicio8(json_decode($json, true));
-            $this->ejercicioIterativo8(filter_var($json, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores, $resultado,$resultados);
+            $this->ejercicioIterativo8(filter_var($json, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores, $resultado, $resultados);
         } else {
             $this->ejercicioIterativo8(filter_var($json, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores);
         }
@@ -220,5 +220,79 @@ class RegularesController extends BaseController
             }
         }
         return $errores;
+    }
+    //EJ 9 abajo
+    public function ejercicioIterativo9(string $json = '', array $errores = [], array $resultado = [], array $resultados = []): void
+    {
+        $data = array(
+            'titulo' => 'Ejercicios regulares',
+            'breadcrumb' => ['Inicio', 'Ordenar'],
+        );
+        $data['errores'] = $errores;
+        $data['json'] = $json;
+        $data['resultado'] = $resultado;
+        $data['resultados'] = $resultados;
+        $this->view->showViews(array('templates/header.view.php', 'ejercicioIterativo9.php', 'templates/footer.view.php'), $data);
+    }
+    public function doEjercicio9():void
+    {
+        $errores=
+    }
+
+    private function checkejercicio9(string $jsonText): array
+    {
+        $errores = [];
+        if (!isset($datosFormulario['json'])) {
+        } else {
+            $jsonText = $datosFormulario['json'];
+
+            if ($jsonText === '') {
+                $errores['json'][] = 'Campo obligatorio';
+            } else {
+                if (json_validate($jsonText)) {
+                    $errores['json'][] = 'Inserta Json valido';
+                } else {
+                    $data = json_decode($jsonText, true);
+                    foreach ($data as $modulo => $alumnos) {
+                        if (!is_string($modulo)) {
+                            $errores['json'][] = "El valor $modulo no es una string";
+                        }
+                        if (!is_array($alumnos)) {
+                            $errores['json'][] = "No tenemos alumnos asociados en $modulo ";
+                        } else {
+                            foreach ($alumnos as $nombre => $notas) {
+                                if (!is_string($nombre)) {
+                                    $errores['json'][] = "El valor $nombre, de $modulo no es una string";
+                                }
+                                if (!is_array($notas)) {
+                                    $errores['json'][] = "No tenemos notas asociadas a $nombre en $modulo ";
+                                } else {
+                                    if($notas===[]){}
+                                    foreach ($notas as $nota) {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $errores;
+    }
+    private function procesarejercicio9(array $datos):array{
+        foreach ($datos as $modulo => $alumnos) {
+            $datosModulo=[
+                'media'=>null,
+                'aprobados' => null,
+                'suspensos' => null,
+                'max' => ['alumno' => null,'nota' => null],
+                'min' => ['alumno' => null,'nota' => null]
+            ];
+            foreach($alumnos as $nombre => $notas){
+                $mediaAlumno =array_sum($notas)/count($notas);
+
+            }
+        }
+        return [][];
     }
 }
