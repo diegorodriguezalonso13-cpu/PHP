@@ -267,9 +267,16 @@ class RegularesController extends BaseController
                                 if (!is_array($notas)) {
                                     $errores['json'][] = "No tenemos notas asociadas a $nombre en $modulo ";
                                 } else {
-                                    if($notas===[]){}
+                                    if($notas===[]){
+                                        $errores['json'][] = "En el modulo $modulo, el alumno '$nombre' no tiene notas asignadas";
+                                    }else{
                                     foreach ($notas as $nota) {
-                                    }
+                                        if (!is_numeric($nota)) {
+                                            $errores['json'][] = "En el modulo $modulo, el alumno '$nombre' tiene la nota $nota que no es un número";
+                                        } else if ($nota < 0 || $nota > 10) {
+                                            $errores['json'][] = "En el modulo $modulo, el alumno '$nombre' tiene la nota $nota que no es un valor entre 0 y 10";
+                                        }
+                                    }}
                                 }
                             }
                         }
@@ -280,19 +287,46 @@ class RegularesController extends BaseController
         return $errores;
     }
     private function procesarejercicio9(array $datos):array{
+        $resultado = [];
         foreach ($datos as $modulo => $alumnos) {
             $datosModulo=[
                 'media'=>null,
-                'aprobados' => null,
-                'suspensos' => null,
+                'aprobados' => 0,
+                'suspensos' => 0,
                 'max' => ['alumno' => null,'nota' => null],
                 'min' => ['alumno' => null,'nota' => null]
             ];
+            $notasFinales=[];
             foreach($alumnos as $nombre => $notas){
                 $mediaAlumno =array_sum($notas)/count($notas);
+                $notasFinales[]=$mediaAlumno;
+                if($mediaAlumno>=5){
+                    $datosModulo['aprobados']++;
+                }else{
+                    $datosModulo['suspensos']++;
+                }
+                if ($datosModulo['max']['alumno'] === null) {
+                    $datosModulo['max']['alumno'] = $nombre;
+                    $datosModulo['max']['nota'] = $mediaAlumno;
+                    $datosModulo['min']['alumno'] = $nombre;
+                    $datosModulo['min']['nota'] = $mediaAlumno;
+                } else {
+                    if ($datosModulo['max']['nota'] < $mediaAlumno) {
+                        $datosModulo['max']['alumno'] = $nombre;
+                        $datosModulo['max']['nota'] = $mediaAlumno;
+                    }
+                    if ($datosModulo['min']['nota'] > $mediaAlumno) {
+                        $datosModulo['min']['alumno'] = $nombre;
+                        $datosModulo['min']['nota'] = $mediaAlumno;
+                    }
+                }
 
             }
+            if (count($notasFinales) > 0) {
+                $datosModulo['media'] = array_sum($notasFinales) / count($notasFinales);
+            }
+            $resultado[$modulo] = $datosModulo;
         }
-        return [][];
+        return $resultado;
     }
 }
