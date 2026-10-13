@@ -15,7 +15,7 @@ declare(strict_types=1);
                     <th>Media</th>
                     <th>Aprobados</th>
                     <th>Suspensos</th>
-                    <th>Máximo</th>
+                    <th>Máximoo</th>
                     <th>Mínimo</th>
                 </tr>
                 </thead>
