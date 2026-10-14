@@ -25,7 +25,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio1Strings();
-
             },
             'get'
         );
@@ -34,7 +33,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio1cuadrado();
-
             },
             'get'
         );
@@ -43,7 +41,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio2trabajo();
-
             },
             'get'
         );
@@ -52,7 +49,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio3rectangulo();
-
             },
             'get'
         );
@@ -61,7 +57,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio4alumno();
-
             },
             'get'
         );
@@ -70,7 +65,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio5hotel();
-
             },
             'get'
         );
@@ -79,7 +73,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio6circulo();
-
             },
             'get'
         );
@@ -88,7 +81,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio7transformar();
-
             },
             'get'
         );
@@ -97,7 +89,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio8cifras();
-
             },
             'get'
         );
@@ -106,7 +97,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosController();
                 $controlador->ejercicio9cadena();
-
             },
             'get'
         );
@@ -115,7 +105,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosDecisionController();
                 $controlador->ejercicioIf1();
-
             },
             'get'
         );
@@ -124,7 +113,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosDecisionController();
                 $controlador->ejercicioIf2();
-
             },
             'get'
         );
@@ -133,7 +121,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosDecisionController();
                 $controlador->ejercicioIf3();
-
             },
             'get'
         );
@@ -142,7 +129,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosDecisionController();
                 $controlador->ejercicioIf4();
-
             },
             'get'
         );
@@ -151,7 +137,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosDecisionController();
                 $controlador->ejercicioIf5();
-
             },
             'get'
         );
@@ -160,7 +145,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosDecisionController();
                 $controlador->ejercicioIf6();
-
             },
             'get'
         );
@@ -169,7 +153,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\EjerciciosDecisionController();
                 $controlador->ejercicioIf7();
-
             },
             'get'
         );
@@ -179,7 +162,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\IterativasController();
                 $controlador->ejercicio1();
-
             },
             'get'
         );
@@ -188,7 +170,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\IterativasController();
                 $controlador->doEjercicio1();
-
             },
             'post'
         );
@@ -197,7 +178,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\IterativasController();
                 $controlador->ejercicioIterativo2();
-
             },
             'get'
         );
@@ -206,7 +186,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\IterativasController();
                 $controlador->doEjercicioIterativo2();
-
             },
             'post'
         );
@@ -215,7 +194,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\IterativasController();
                 $controlador->ejercicioIterativo3();
-
             },
             'get'
         );
@@ -224,7 +202,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\IterativasController();
                 $controlador->doEjercicioIterativo3();
-
             },
             'post'
         );
@@ -233,7 +210,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\RegularesController();
                 $controlador->ejercicioIterativo4();
-
             },
             'get'
         );
@@ -242,7 +218,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\RegularesController();
                 $controlador->doEjercicioIterativo4();
-
             },
             'post'
         );
@@ -251,7 +226,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\RegularesController();
                 $controlador->ejercicioIterativo5();
-
             },
             'get'
         );
@@ -260,7 +234,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\RegularesController();
                 $controlador->doEjercicioIterativo5();
-
             },
             'post'
         );
@@ -269,7 +242,6 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\RegularesController();
                 $controlador->ejercicioIterativo8();
-
             },
             'get'
         );
@@ -278,9 +250,17 @@ class FrontController
             function () {
                 $controlador = new \Com\Daw2\Controllers\RegularesController();
                 $controlador->doEjercicioIterativo8();
-
             },
             'post'
+        );
+
+        Route::add(
+            '/TrabajadorController',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->trabajar();
+            },
+            'get'
         );
 
         Route::add(
