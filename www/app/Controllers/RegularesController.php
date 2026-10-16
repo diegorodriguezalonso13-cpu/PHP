@@ -236,7 +236,8 @@ class RegularesController extends BaseController
     }
     public function doEjercicio9():void
     {
-        $errores=
+        //TODO:esto
+        $errores='a';
     }
 
     private function checkejercicio9(string $jsonText): array

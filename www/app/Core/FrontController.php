@@ -258,7 +258,15 @@ class FrontController
             '/TrabajadorController',
             function () {
                 $controlador = new \Com\Daw2\Controllers\TrabajadorController();
-                $controlador->trabajar();
+                $controlador->testDb();
+            },
+            'get'
+        );
+        Route::add(
+            '/consultas1',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->consultas1();
             },
             'get'
         );
