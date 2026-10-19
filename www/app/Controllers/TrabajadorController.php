@@ -24,4 +24,49 @@ class TrabajadorController extends BaseController
         $data['trabajadores'] = $model->getTrabajadores();
         $this->view->showViews(array('templates/header.view.php', 'consultas1.php', 'templates/footer.view.php'), $data);
     }
+    public function consultas2(): void
+    {
+        $data = array(
+            'titulo' => 'Ejercicio Tabajadores',
+            'breadcrumb' => ['Inicio', 'Trabajadores'],
+        );
+        $model = new TrabajadorModel();
+        $trabajadores = $model -> getTrabajadores();
+        $salarioBruto = array_column($trabajadores, 'salarioBruto');
+        array_multisort($salarioBruto, SORT_DESC, $trabajadores);
+        $data['trabajadores'] = $trabajadores;
+        $this->view->showViews(array('templates/header.view.php', 'consultas2.php', 'templates/footer.view.php'), $data);
+    }
+    public function consultas3(): void
+    {
+        $data = array(
+            'titulo' => 'Ejercicio Tabajadores',
+            'breadcrumb' => ['Inicio', 'Trabajadores'],
+        );
+        $model = new TrabajadorModel();
+        $trabajadores = $model -> getTrabajadores();
+        foreach($trabajadores as $trabajador => $dato) {
+            if($dato['id_rol']!=5){
+                unset($trabajadores[$trabajador]);
+            }
+        }
+        $data['trabajadores'] = $trabajadores;
+        $this->view->showViews(array('templates/header.view.php', 'consultas3.php', 'templates/footer.view.php'), $data);
+    }
+    public function consultas4(): void
+    {
+        $data = array(
+            'titulo' => 'Ejercicio Tabajadores',
+            'breadcrumb' => ['Inicio', 'Trabajadores'],
+        );
+        $model = new TrabajadorModel();
+        $trabajadores = $model -> getTrabajadores();
+        foreach($trabajadores as $trabajador => $dato) {
+            if(!preg_match("/^Carlos/",$dato['username'])){
+                unset($trabajadores[$trabajador]);
+            }
+        }
+        $data['trabajadores'] = $trabajadores;
+        $this->view->showViews(array('templates/header.view.php', 'consultas4.php', 'templates/footer.view.php'), $data);
+    }
 }

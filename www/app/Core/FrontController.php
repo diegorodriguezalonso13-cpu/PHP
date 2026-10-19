@@ -270,6 +270,30 @@ class FrontController
             },
             'get'
         );
+        Route::add(
+            '/consultas2',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->consultas2();
+            },
+            'get'
+        );
+        Route::add(
+            '/consultas3',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->consultas3();
+            },
+            'get'
+        );
+        Route::add(
+            '/consultas4',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->consultas4();
+            },
+            'get'
+        );
 
         Route::add(
             '/demo-proveedores',
