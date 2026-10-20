@@ -34,28 +34,24 @@ class TrabajadorController extends BaseController
         $data['trabajadores'] = $model->getAllTrabajadoresOrdenados();
         $this->view->showViews(array('templates/header.view.php', 'consultas2.php', 'templates/footer.view.php'), $data);
     }
-    public function prepStmt1(string $username = ''): void
+    public function prepStmt1(): void
     {
         $data = array(
             'titulo' => 'Todos los trabajadores ordenados',
             'breadcrumb' => ['Inicio', 'Consultas simples'],
         );
+        $username = $_GET['username'] ?? '';
+        $id_rol = $_GET['id_rol'] ?? '';
         $model = new TrabajadorModel();
-        if ($username === '') {
+        if ($username === '' && $id_rol === '') {
             $data['trabajadores'] = $model->getAllTrabajadores();
-        } else {
+        } elseif ($id_rol === '') {
             $data['trabajadores'] = $model->getTrabajadoresByName($username);
+        } elseif ($username === '') {
+            $data['trabajadores'] = $model->getTrabajadoresByRol($id_rol);
         }
+        $data['username'] = $username;
+        $data['id_rol'] = $id_rol;
         $this->view->showViews(array('templates/header.view.php', 'preparedStatement1.php', 'templates/footer.view.php'), $data);
-    }
-    public function doPrepStmt1(): void
-    {
-        $data = array(
-            'titulo' => 'Todos los trabajadores ordenados',
-            'breadcrumb' => ['Inicio', 'Consultas simples'],
-        );
-        $username = $_GET['username'];
-
-        $this->prepStmt1($username);
     }
 }

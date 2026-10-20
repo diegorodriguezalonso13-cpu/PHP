@@ -286,14 +286,6 @@ class FrontController
             },
             'get'
         );
-        Route::add(
-            '/preparedStatement1',
-            function () {
-                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
-                $controlador->doPrepStmt1();
-            },
-            'post'
-        );
 
         Route::add(
             '/demo-proveedores',

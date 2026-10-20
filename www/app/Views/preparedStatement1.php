@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 ?>
 <div class="row">
-    <?php
-    if (!empty($trabajadores)) {
-    ?>
     <div class="col-12">
         <div class="card shadow mb-4">
-            <form method="get" action="/proveedores">
+            <form method="get" action="">
                 <input type="hidden" name="order" value="1"/>
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -22,7 +19,7 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="username">Username:</label>
-                                <input type="text" class="form-control" name="username" id="username" value="" />
+                                <input type="text" class="form-control" name="username" id="username" value="<?php echo $username ?? ''; ?>" />
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
@@ -36,7 +33,7 @@ declare(strict_types=1);
                                 <label for="id_rol">Rol:</label>
                                 <select name="id_rol" id="id_rol" class="form-control select2" data-placeholder="Tipo proveedor" multiple>
                                     <option value="">-</option>
-                                    <option value="3" >Componentes móviles</option>
+                                    <option value="" >Componentes móviles</option>
                                     <option value="4" >Componentes PC</option>
                                 </select>
                             </div>
@@ -61,13 +58,16 @@ declare(strict_types=1);
                 </div>
                 <div class="card-footer">
                     <div class="col-12 text-right">
-                        <a href="/proveedores" value="" name="reiniciar" class="btn btn-danger">Reiniciar filtros</a>
+                        <a href="/preparedStatement1" value="" name="reiniciar" class="btn btn-danger">Reiniciar filtros</a>
                         <input type="submit" value="Aplicar filtros" name="enviar" class="btn btn-primary ml-2"/>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <?php
+    if (!empty($trabajadores)) {
+        ?>
     <div class="col-12">
         <table class="table table-striped">
             <thead>
@@ -84,7 +84,6 @@ declare(strict_types=1);
             <?php
             foreach ($trabajadores as $trabajador => $datos) {
                 ?><tr>
-                <td><?php echo $trabajador?></td>
                 <td><?php echo $datos['username']?></td>
                 <td><?php echo $datos['salarioBruto']?></td>
                 <td><?php echo $datos['retencionIRPF']?></td>
@@ -95,42 +94,12 @@ declare(strict_types=1);
             <?php } ?>
             </tbody>
         </table>
-        <?php }; ?>
-        <div class="col-12">
-            <div class="card shadow mb-4">
-                <form method="post" action="">
-                    <div
-                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Ordenación de mayor a menor, prueba github va bien</h6>
-                    </div>
-                    <!-- Card Body -->
-                    <div class="card-body">
-                        <!--<form action="./?sec=formulario" method="post">                   -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="numeros">Json:</label>
-                                    <textarea class="form-control" rows="5" name="json"><?php echo $json ?? ''; ?></textarea>
-                                    <p class="text-danger small">
-                                        <?php
-                                        if (!empty($errores)) {
-                                            foreach ($errores['json'] as $error) {
-                                                echo $error . '<br/>';
-                                            }
-                                        }
-                                        ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="col-12 text-right">
-                            <input type="submit" value="Hacer cálculos" name="enviar" class="btn btn-primary ml-2"/>
-                        </div>
-                    </div>
-                </form>
-            </div>
+    <?php } else { ?>
+        <div>
+            <p class="text-danger">
+                No se encontraron coincidencias.
+            </p>
         </div>
+    <?php }; ?>
     </div>
 

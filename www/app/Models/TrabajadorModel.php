@@ -30,9 +30,15 @@ class TrabajadorModel extends BaseDbModel
     public function getTrabajadoresByName($username): array
     {
         $sql = self::SELECT_FROM . " WHERE username LIKE :username ";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => "%{$username}%"]);
-        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll();
+    }
+    public function getTrabajadoresByRol($id_rol): array
+    {
+        $sql = self::SELECT_FROM . " WHERE id_rol LIKE :id_rol ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => "%{$id_rol}%"]);
         return $stmt->fetchAll();
     }
 
