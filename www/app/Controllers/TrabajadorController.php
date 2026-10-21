@@ -50,8 +50,9 @@ class TrabajadorController extends BaseController
         } elseif ($username === '') {
             $data['trabajadores'] = $model->getTrabajadoresByRol($id_rol);
         }
-        $data['username'] = $username;
-        $data['id_rol'] = $id_rol;
+        $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $data['roles'] = $model->getAllRoles();
+        $data['input'] = $input;
         $this->view->showViews(array('templates/header.view.php', 'preparedStatement1.php', 'templates/footer.view.php'), $data);
     }
 }

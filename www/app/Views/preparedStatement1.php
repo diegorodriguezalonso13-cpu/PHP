@@ -19,22 +19,27 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="username">Username:</label>
-                                <input type="text" class="form-control" name="username" id="username" value="<?php echo $username ?? ''; ?>" />
+                                <input type="text" class="form-control" name="username" id="username" value="<?php echo $input['username'] ?? ''; ?>" />
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="salarioBruto">Salario Bruto:</label>
-                                <input type="text" class="form-control" name="salarioBruto" id="salarioBruto" value="" />
+                                <input type="text" class="form-control" name="salarioMax" id="salarioMax" value="" placeholder="Máximo"/><br/>
+                                <input type="text" class="form-control" name="salarioMin" id="salarioMin" value="" placeholder="Mínimo"/>
                             </div>
                         </div>
                         <div class="col-12 col-lg-3">
                             <div class="mb-3">
                                 <label for="id_rol">Rol:</label>
-                                <select name="id_rol" id="id_rol" class="form-control select2" data-placeholder="Tipo proveedor" multiple>
-                                    <option value="">-</option>
-                                    <option value="" >Componentes móviles</option>
-                                    <option value="4" >Componentes PC</option>
+                                <select name="id_rol" id="id_rol" class="form-control" data-placeholder="Tipo proveedor">
+                                    <option value=""selected>-</option>
+                                    <?php foreach ($roles as $rol) {
+                                        if ($input['id_rol'] == $rol['id_rol']) { ?>
+                                            <option value="<?php echo $rol['id_rol']; ?>" selected><?php echo $rol['nombre_rol']; ?></option>
+                                        <?php }else{ ?>
+                                            <option value="<?php echo $rol['id_rol']?>"><?php echo $rol['nombre_rol'];?></option>
+                                    <?php }};?>
                                 </select>
                             </div>
                         </div>
@@ -76,8 +81,8 @@ declare(strict_types=1);
                 <th>salarioBruto</th>
                 <th>retencionIRPF</th>
                 <th>Activo</th>
-                <th>id_rol</th>
-                <th>id_country</th>
+                <th>Rol</th>
+                <th>País</th>
             </tr>
             </thead>
             <tbody>
@@ -88,8 +93,8 @@ declare(strict_types=1);
                 <td><?php echo $datos['salarioBruto']?></td>
                 <td><?php echo $datos['retencionIRPF']?></td>
                 <td><?php echo $datos['activo']?></td>
-                <td><?php echo $datos['id_rol']?></td>
-                <td><?php echo $datos['id_country']?></td>
+                <td><?php echo $datos['nombre_rol']?></td>
+                <td><?php echo $datos['country_name']?></td>
                 </tr>
             <?php } ?>
             </tbody>

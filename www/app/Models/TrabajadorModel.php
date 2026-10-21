@@ -36,9 +36,21 @@ class TrabajadorModel extends BaseDbModel
     }
     public function getTrabajadoresByRol($id_rol): array
     {
-        $sql = self::SELECT_FROM . " WHERE id_rol LIKE :id_rol ";
+        $sql = self::SELECT_FROM . " WHERE t.id_rol LIKE :id_rol ";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['username' => "%{$id_rol}%"]);
+        $stmt->execute(['id_rol' => "$id_rol"]);
+        return $stmt->fetchAll();
+    }
+    public function getAllRoles(): array
+    {
+        $sql = "SELECT art.* FROM aux_rol_trabajador art";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll();
+    }
+    public function getTrabajadoresBySalario(): array
+    {
+        $sql = self::SELECT_FROM;
+        $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
 
