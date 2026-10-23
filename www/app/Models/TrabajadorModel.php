@@ -27,6 +27,21 @@ class TrabajadorModel extends BaseDbModel
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
+
+    public function getFilterBy(array $filtros): array
+    {
+        $sql = self::SELECT_FROM;
+        $values = [];
+        $condiciones = [];
+        if (!empty($filtros['username'])) {
+            $condiciones[]=" WHERE username LIKE :username ";
+            $sql = self::SELECT_FROM . " WHERE username LIKE :username ";
+            $values["username"] = "%" . $filtros['username'] . "%";
+        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($values);
+        return $stmt->fetchAll();
+    }
     public function getTrabajadoresByName($username): array
     {
         $sql = self::SELECT_FROM . " WHERE username LIKE :username ";
@@ -41,18 +56,11 @@ class TrabajadorModel extends BaseDbModel
         $stmt->execute(['id_rol' => "$id_rol"]);
         return $stmt->fetchAll();
     }
-    public function getAllRoles(): array
-    {
-        $sql = "SELECT art.* FROM aux_rol_trabajador art";
-        $stmt = $this->pdo->query($sql);
-        return $stmt->fetchAll();
-    }
+
     public function getTrabajadoresBySalario(): array
     {
         $sql = self::SELECT_FROM;
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
-
-
 }
