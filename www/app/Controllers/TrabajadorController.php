@@ -15,6 +15,7 @@ class TrabajadorController extends BaseController
         $model = new TrabajadorModel();
         $model->getTrabajadores();
     }*/
+    //Prueba de que si van los commits
     public function consultas1(): void
     {
         $data = array(
