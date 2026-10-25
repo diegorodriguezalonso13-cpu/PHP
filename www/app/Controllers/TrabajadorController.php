@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Com\Daw2\Controllers;
 
 use Com\Daw2\Core\BaseController;
+use Com\Daw2\Models\AuxRolTrabajadorModel;
 use Com\Daw2\Models\TrabajadorModel;
 
 class TrabajadorController extends BaseController
@@ -21,52 +22,39 @@ class TrabajadorController extends BaseController
             'breadcrumb' => ['Inicio', 'Ordenar'],
         );
         $model = new TrabajadorModel();
-        $data['trabajadores'] = $model->getTrabajadores();
+        $data['trabajadores'] = $model->getAllTrabajadores();
         $this->view->showViews(array('templates/header.view.php', 'consultas1.php', 'templates/footer.view.php'), $data);
     }
     public function consultas2(): void
     {
         $data = array(
-            'titulo' => 'Ejercicio Tabajadores',
-            'breadcrumb' => ['Inicio', 'Trabajadores'],
+            'titulo' => 'Todos los trabajadores ordenados',
+            'breadcrumb' => ['Inicio', 'Consultas simples'],
         );
         $model = new TrabajadorModel();
-        $trabajadores = $model -> getTrabajadores();
-        $salarioBruto = array_column($trabajadores, 'salarioBruto');
-        array_multisort($salarioBruto, SORT_DESC, $trabajadores);
-        $data['trabajadores'] = $trabajadores;
+        $data['trabajadores'] = $model->getAllTrabajadoresOrdenados();
         $this->view->showViews(array('templates/header.view.php', 'consultas2.php', 'templates/footer.view.php'), $data);
     }
-    public function consultas3(): void
+    public function prepStmt1(): void
     {
         $data = array(
-            'titulo' => 'Ejercicio Tabajadores',
-            'breadcrumb' => ['Inicio', 'Trabajadores'],
+            'titulo' => 'Todos los trabajadores ordenados',
+            'breadcrumb' => ['Inicio', 'Consultas simples'],
         );
+        $username = $_GET['username'] ?? '';
+        $id_rol = $_GET['id_rol'] ?? '';
         $model = new TrabajadorModel();
-        $trabajadores = $model -> getTrabajadores();
-        foreach($trabajadores as $trabajador => $dato) {
-            if($dato['id_rol']!=5){
-                unset($trabajadores[$trabajador]);
-            }
+        $modelRol=new AuxRolTrabajadorModel();
+        if ($username === '' && $id_rol === '') {
+            $data['trabajadores'] = $model->getAllTrabajadores();
+        } elseif ($id_rol === '') {
+            $data['trabajadores'] = $model->getTrabajadoresByName($username);
+        } elseif ($username === '') {
+            $data['trabajadores'] = $model->getTrabajadoresByRol($id_rol);
         }
-        $data['trabajadores'] = $trabajadores;
-        $this->view->showViews(array('templates/header.view.php', 'consultas3.php', 'templates/footer.view.php'), $data);
-    }
-    public function consultas4(): void
-    {
-        $data = array(
-            'titulo' => 'Ejercicio Tabajadores',
-            'breadcrumb' => ['Inicio', 'Trabajadores'],
-        );
-        $model = new TrabajadorModel();
-        $trabajadores = $model -> getTrabajadores();
-        foreach($trabajadores as $trabajador => $dato) {
-            if(!preg_match("/^Carlos/",$dato['username'])){
-                unset($trabajadores[$trabajador]);
-            }
-        }
-        $data['trabajadores'] = $trabajadores;
-        $this->view->showViews(array('templates/header.view.php', 'consultas4.php', 'templates/footer.view.php'), $data);
+        $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $data['roles'] = $modelRol->getAllRoles();
+        $data['input'] = $input;
+        $this->view->showViews(array('templates/header.view.php', 'preparedStatement1.php', 'templates/footer.view.php'), $data);
     }
 }

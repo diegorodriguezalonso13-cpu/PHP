@@ -279,18 +279,10 @@ class FrontController
             'get'
         );
         Route::add(
-            '/consultas3',
+            '/preparedStatement1',
             function () {
                 $controlador = new \Com\Daw2\Controllers\TrabajadorController();
-                $controlador->consultas3();
-            },
-            'get'
-        );
-        Route::add(
-            '/consultas4',
-            function () {
-                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
-                $controlador->consultas4();
+                $controlador->prepStmt1();
             },
             'get'
         );
