@@ -47,9 +47,13 @@ declare(strict_types=1);
                             <div class="mb-3">
                                 <label for="id_country">País:</label>
                                 <select name="id_country" id="id_country" class="form-control" data-placeholder="Continente">
-                                    <option value="">-</option>
-                                    <option value="1" >Europa</option>
-                                    <option value="2" >Asia</option>
+                                    <option value=""selected>-</option>
+                                    <?php foreach ($countries as $country) {
+                                        if ($input['id_country'] == $country['id']) { ?>
+                                            <option value="<?php echo $country['id']; ?>" selected><?php echo $country['country_name']; ?></option>
+                                        <?php }else{ ?>
+                                            <option value="<?php echo $country['id']?>"><?php echo $country['country_name'];?></option>
+                                        <?php }};?>
                                 </select>
                             </div>
                         </div>

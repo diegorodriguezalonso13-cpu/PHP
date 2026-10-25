@@ -34,9 +34,27 @@ class TrabajadorModel extends BaseDbModel
         $values = [];
         $condiciones = [];
         if (!empty($filtros['username'])) {
-            $condiciones[]=" WHERE username LIKE :username ";
-            $sql = self::SELECT_FROM . " WHERE username LIKE :username ";
+            $condiciones[] = " username LIKE :username ";
             $values["username"] = "%" . $filtros['username'] . "%";
+        }
+        if (!empty($filtros['id_rol'])) {
+            $condiciones[] = " t.id_rol LIKE :id_rol ";
+            $values["id_rol"] = $filtros['id_rol'];
+        }
+        if (!empty($filtros['salarioMin']) || !empty($filtros['salarioMax'])) {
+            if (!empty($filtros['salarioMin'])) {
+                $condiciones[] = "salarioBruto >= :salarioMin";
+                $values["salarioMin"] = $filtros['salarioMin'];
+            }
+            if (!empty($filtros['salarioMax'])) {
+                $condiciones[] = "salarioBruto <= :salarioMax";
+                $values["salarioMax"] = $filtros['salarioMax'];
+            }
+        }
+        //TODO: Preguntar a Rafa si un foreach podría ser óptimo
+
+        if (!empty($condiciones)) {
+            $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($values);
