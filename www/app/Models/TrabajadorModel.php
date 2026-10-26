@@ -41,15 +41,32 @@ class TrabajadorModel extends BaseDbModel
             $condiciones[] = " t.id_rol LIKE :id_rol ";
             $values["id_rol"] = $filtros['id_rol'];
         }
-        if (!empty($filtros['salarioMin']) || !empty($filtros['salarioMax'])) {
-            if (!empty($filtros['salarioMin'])) {
-                $condiciones[] = "salarioBruto >= :salarioMin";
-                $values["salarioMin"] = $filtros['salarioMin'];
+        if (!empty($filtros['salarioMin'])) {
+            $condiciones[] = "salarioBruto >= :salarioMin";
+            $values["salarioMin"] = $filtros['salarioMin'];
+        }
+        if (!empty($filtros['salarioMax'])) {
+            $condiciones[] = "salarioBruto <= :salarioMax";
+            $values["salarioMax"] = $filtros['salarioMax'];
+        }
+        if (!empty($filtros['retencionIRPFMin'])) {
+            $condiciones[] = "retencionIRPF >= :retencionIRPFMin";
+            $values["retencionIRPFMin"] = $filtros['retencionIRPFMin'];
+        }
+        if (!empty($filtros['retencionIRPFMax'])) {
+            $condiciones[] = "retencionIRPF <= :retencionIRPFMax";
+            $values["retencionIRPFMax"] = $filtros['retencionIRPFMax'];
+        }
+        if (!empty($filtros['id_country']) && is_array($filtros['id_country'])) {
+            $countries = [];
+            $i = 1;
+            foreach ($filtros['id_country'] as $idCountry) {
+                $countries[":id_country{$i}"] = $idCountry;
+                $i++;
             }
-            if (!empty($filtros['salarioMax'])) {
-                $condiciones[] = "salarioBruto <= :salarioMax";
-                $values["salarioMax"] = $filtros['salarioMax'];
-            }
+            $claves = array_keys($countries);
+            $condiciones[] =  "t.id_country IN (" . implode(", ", $claves) . ")";
+            $values = array_merge($values, $countries);
         }
         //TODO: Preguntar a Rafa si un foreach podría ser óptimo
 

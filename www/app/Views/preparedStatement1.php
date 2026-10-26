@@ -25,8 +25,8 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="salarioBruto">Salario Bruto:</label>
-                                <input type="text" class="form-control" name="salarioMax" id="salarioMax" value="" placeholder="Máximo"/><br/>
-                                <input type="text" class="form-control" name="salarioMin" id="salarioMin" value="" placeholder="Mínimo"/>
+                                <input type="text" class="form-control" name="salarioMax" id="salarioMax" value="<?php echo $input['salarioMax'] ?? ''; ?>" placeholder="Máximo"/><br/>
+                                <input type="text" class="form-control" name="salarioMin" id="salarioMin" value="<?php echo $input['salarioMin'] ?? ''; ?>" placeholder="Mínimo"/>
                             </div>
                         </div>
                         <div class="col-12 col-lg-3">
@@ -46,10 +46,9 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="id_country">País:</label>
-                                <select name="id_country" id="id_country" class="form-control" data-placeholder="Continente">
-                                    <option value=""selected>-</option>
+                                <select name="id_country[]" id="id_country" class="form-control select2" data-placeholder="Afghanistan,Albania,..." multiple>
                                     <?php foreach ($countries as $country) {
-                                        if ($input['id_country'] == $country['id']) { ?>
+                                        if (isset($input['id_country']) && in_array($country['id'], $input['id_country'])) { ?>
                                             <option value="<?php echo $country['id']; ?>" selected><?php echo $country['country_name']; ?></option>
                                         <?php }else{ ?>
                                             <option value="<?php echo $country['id']?>"><?php echo $country['country_name'];?></option>
@@ -60,7 +59,8 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="retencionIRPF">Retención IRPF:</label>
-                                <input type="text" class="form-control" name="retencionIRPF" id="retencionIRPF" value="" placeholder="Mí­nimo" />
+                                <input type="text" class="form-control" name="retencionIRPFMax" id="retencionIRPFMax" value="<?php echo $input['retencionIRPFMax'] ?? ''; ?>" placeholder="Máximo" /><br/>
+                                <input type="text" class="form-control" name="retencionIRPFMin" id="retencionIRPFMin" value="<?php echo $input['retencionIRPFMin'] ?? ''; ?>" placeholder="Mínimo" />
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@ declare(strict_types=1);
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Username</th>
+                <th><a>Username</a> <i class="fas fa-sort-amount-down-alt"></i></th>
                 <th>salarioBruto</th>
                 <th>retencionIRPF</th>
                 <th>Activo</th>

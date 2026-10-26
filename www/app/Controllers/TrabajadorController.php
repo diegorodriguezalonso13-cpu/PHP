@@ -56,6 +56,8 @@ class TrabajadorController extends BaseController
 //        } elseif ($username === '') {
 //            $data['trabajadores'] = $model->getTrabajadoresByRol($id_rol);
 //        }
+
+        //http_build_query(array): string
         $data['trabajadores'] = $model->getFilterBy($_GET);
 
         $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
