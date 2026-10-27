@@ -7,14 +7,14 @@ declare(strict_types=1);
     <div class="col-12">
         <div class="card shadow mb-4">
             <form method="get" action="">
-                <input type="hidden" name="order" value="1"/>
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <!--<form action="./?sec=formulario" method="post">                   -->
+                    <!--<form action="./?sec=formulario" method="post">-->
+                    <input type="hidden" name="order" value="<?php echo $order; ?>"/>
                     <div class="row">
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
@@ -37,9 +37,10 @@ declare(strict_types=1);
                                     <?php foreach ($roles as $rol) {
                                         if ($input['id_rol'] == $rol['id_rol']) { ?>
                                             <option value="<?php echo $rol['id_rol']; ?>" selected><?php echo $rol['nombre_rol']; ?></option>
-                                        <?php }else{ ?>
+                                        <?php } else { ?>
                                             <option value="<?php echo $rol['id_rol']?>"><?php echo $rol['nombre_rol'];?></option>
-                                    <?php }};?>
+                                        <?php }
+                                    };?>
                                 </select>
                             </div>
                         </div>
@@ -50,9 +51,10 @@ declare(strict_types=1);
                                     <?php foreach ($countries as $country) {
                                         if (isset($input['id_country']) && in_array($country['id'], $input['id_country'])) { ?>
                                             <option value="<?php echo $country['id']; ?>" selected><?php echo $country['country_name']; ?></option>
-                                        <?php }else{ ?>
+                                        <?php } else { ?>
                                             <option value="<?php echo $country['id']?>"><?php echo $country['country_name'];?></option>
-                                        <?php }};?>
+                                        <?php }
+                                    };?>
                                 </select>
                             </div>
                         </div>
@@ -81,12 +83,20 @@ declare(strict_types=1);
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><a>Username</a> <i class="fas fa-sort-amount-down-alt"></i></th>
-                <th>salarioBruto</th>
-                <th>retencionIRPF</th>
+                <th><a href="/preparedStatement1?order=1">Username</a> <i class="fas fa-sort-amount-down-alt"></i></th>
+                <th><a href="/preparedStatement1?order=2&<?php echo $queryParams ?>">Salario Bruto</a> <?php if ($order === 2) :
+                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
+                                                         endif; ?></th>
+                <th><a href="/preparedStatement1?order=3&<?php echo $queryParams ?>">Retención IRPF</a> <?php if ($order === 3) :
+                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
+                                                         endif; ?></th>
                 <th>Activo</th>
-                <th>Rol</th>
-                <th>País</th>
+                <th><a href="/preparedStatement1?order=4&<?php echo $queryParams ?>">Rol</a> <?php if ($order === 4) :
+                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
+                                                         endif; ?></th>
+                <th><a href="/preparedStatement1?order=5&<?php echo $queryParams ?>">País</a> <?php if ($order === 5) :
+                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
+                                                         endif; ?></th>
             </tr>
             </thead>
             <tbody>
