@@ -59,11 +59,15 @@ class TrabajadorController extends BaseController
 
         //http_build_query(array): string
         $data['trabajadores'] = $model->getFilterBy($_GET);
-
+        $data['order'] = $model->getOrderIndex($_GET);
         $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $data['roles'] = $modelRol->getAllRoles();
         $data['countries'] = $modelCountry->getAllCountries();
         $data['input'] = $input;
+        //No modificamos la superglobal, la copiamos en $getOrder
+        $getOrder = $_GET;
+        unset($getOrder['order']);
+        $data['queryParams'] = http_build_query($getOrder);
         $this->view->showViews(array('templates/header.view.php', 'preparedStatement1.php', 'templates/footer.view.php'), $data);
     }
 }

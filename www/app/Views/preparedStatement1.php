@@ -14,7 +14,7 @@ declare(strict_types=1);
                 <!-- Card Body -->
                 <div class="card-body">
                     <!--<form action="./?sec=formulario" method="post">-->
-                    <input type="hidden" name="order" value="<?php echo $order; ?>"/>
+                        <input type="hidden" name="order" value="<?php echo $order; ?>"/>
                     <div class="row">
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
@@ -83,7 +83,9 @@ declare(strict_types=1);
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><a href="/preparedStatement1?order=1">Username</a> <i class="fas fa-sort-amount-down-alt"></i></th>
+                <th><a href="/preparedStatement1?order=1&<?php echo $queryParams ?>">Username</a><?php if ($order === 1) :
+                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
+                                                         endif; ?></th>
                 <th><a href="/preparedStatement1?order=2&<?php echo $queryParams ?>">Salario Bruto</a> <?php if ($order === 2) :
                     ?><i class="fas fa-sort-amount-down-alt"></i><?php
                                                          endif; ?></th>
