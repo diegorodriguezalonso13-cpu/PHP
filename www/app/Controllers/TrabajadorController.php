@@ -48,7 +48,7 @@ class TrabajadorController extends BaseController
         $id_country = $_GET['id_country'] ?? '';
         $model = new TrabajadorModel();
         $modelRol = new AuxRolTrabajadorModel();
-        $modelCountry=new AuxCountryModel();
+        $modelCountry = new AuxCountryModel();
 //        if ($username === '' && $id_rol === '') {
 //            $data['trabajadores'] = $model->getAllTrabajadores();
 //        } elseif ($id_rol === '') {
@@ -59,6 +59,8 @@ class TrabajadorController extends BaseController
 
         //http_build_query(array): string
         $data['trabajadores'] = $model->getFilterBy($_GET);
+        $data['page'] = $model->getPage($_GET);
+        $data['lastPage'] = ceil(count($model->getFilterBy($_GET)) / 20);
         $data['order'] = $model->getOrderIndex($_GET);
         $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $data['roles'] = $modelRol->getAllRoles();
@@ -67,7 +69,11 @@ class TrabajadorController extends BaseController
         //No modificamos la superglobal, la copiamos en $getOrder
         $getOrder = $_GET;
         unset($getOrder['order']);
+        unset($getOrder['sentido']);
         $data['queryParams'] = http_build_query($getOrder);
+        $getPages = $_GET;
+        unset($getPages['page']);
+        $data['queryParamsPages'] = http_build_query($getPages);
         $this->view->showViews(array('templates/header.view.php', 'preparedStatement1.php', 'templates/footer.view.php'), $data);
     }
 }

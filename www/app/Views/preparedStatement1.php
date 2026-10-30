@@ -81,26 +81,15 @@ declare(strict_types=1);
         ?>
     <div class="col-12">
         <table class="table table-striped">
-            <thead>
-            <tr>
-                <th><a href="/preparedStatement1?order=1&<?php echo $queryParams ?>">Username</a><?php if ($order === 1) :
-                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
-                                                         endif; ?></th>
-                <th><a href="/preparedStatement1?order=2&<?php echo $queryParams ?>">Salario Bruto</a> <?php if ($order === 2) :
-                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
-                                                         endif; ?></th>
-                <th><a href="/preparedStatement1?order=3&<?php echo $queryParams ?>">Retención IRPF</a> <?php if ($order === 3) :
-                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
-                                                         endif; ?></th>
-                <th>Activo</th>
-                <th><a href="/preparedStatement1?order=4&<?php echo $queryParams ?>">Rol</a> <?php if ($order === 4) :
-                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
-                                                         endif; ?></th>
-                <th><a href="/preparedStatement1?order=5&<?php echo $queryParams ?>">País</a> <?php if ($order === 5) :
-                    ?><i class="fas fa-sort-amount-down-alt"></i><?php
-                                                         endif; ?></th>
-            </tr>
-            </thead>
+            <?php
+            require_once '../app/Helpers/formulario_helper.php';
+            echo printTableHeader(
+                ['Username', 'Salario Bruto', 'Retención', 'Rol', 'País'],
+                $order,
+                $input['sentido'] ?? null,
+                $queryParams
+            );
+            ?>
             <tbody>
             <?php
             foreach ($trabajadores as $trabajador => $datos) {
@@ -122,5 +111,38 @@ declare(strict_types=1);
             </p>
         </div>
     <?php }; ?>
+        <div class="card-footer">
+            <p>Paginas:<?php echo $paginates ?></p>
+            <nav aria-label="Navegacion por paginas">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="/preparedStatement?page=1&<?php echo $queryParams?>" aria-label="First">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">First</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/preparedStatement?page=2" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item active"><a class="page-link" href="#"><?php echo $page ?></a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="/preparedStatement?page=4" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/preparedStatement?page=<?php echo $lastPage ?>&<?php echo $queryParams?>" aria-label="Last">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Last</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 

@@ -11,6 +11,9 @@ class TrabajadorModel extends BaseDbModel
 {
     private const array ORDER_FIELDS = ['t.username', 't.salarioBruto', 't.retencionIRPF', 'nombre_rol', 'country_name'];
     private const DEFAULT_ORDER_INDEX = 1;
+    private const DEFAULT_ITEMS_QUANTITY = 20;
+
+    private const DEFAULT_PAGE_NUMBER = 1;
     private const string SELECT_FROM = "SELECT t.*, art.nombre_rol, ac.country_name FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country";
     public function getTrabajadores(): array
     {
@@ -70,12 +73,14 @@ class TrabajadorModel extends BaseDbModel
             $condiciones[] =  "t.id_country IN (" . implode(", ", $claves) . ")";
             $values = array_merge($values, $countries);
         }
-        //TODO: Preguntar a Rafa si un foreach podría ser óptimo
 
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
-        $sql .= " ORDER BY " . self::ORDER_FIELDS[$this->getOrderIndex($filtros) - 1];
+        $sentido = !empty($filtros['sentido']) && $filtros['sentido'] === 'desc' ? 'DESC' : 'ASC';
+        $sql .= " ORDER BY " . self::ORDER_FIELDS[$this->getOrderIndex($filtros) - 1] . " $sentido";
+        //$inicio = self::DEFAULT_ITEMS_QUANTITY * ($filtros['page'] - 1);
+        //$sql .= " LIMIT " . $inicio . " ," . self::DEFAULT_ITEMS_QUANTITY;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($values);
         return $stmt->fetchAll();
@@ -89,6 +94,16 @@ class TrabajadorModel extends BaseDbModel
             return self::DEFAULT_ORDER_INDEX;
         } else {
             return (int)$filtros['order'];
+        }
+    }
+    public function getPage(array $filtros): int
+    {
+        if (empty($filtros['page'])) {
+            return self::DEFAULT_PAGE_NUMBER;
+        } elseif (filter_var($filtros['order'], FILTER_VALIDATE_INT) === false || $filtros['order'] < 1 || $filtros['order'] > count(self::ORDER_FIELDS)) {
+            return self::DEFAULT_ORDER_INDEX;
+        } else {
+            return (int)$filtros['page'];
         }
     }
     public function getTrabajadoresByName($username): array
