@@ -60,7 +60,7 @@ class TrabajadorController extends BaseController
         //http_build_query(array): string
         $data['trabajadores'] = $model->getFilterBy($_GET);
         $data['page'] = $model->getPage($_GET);
-        $data['lastPage'] = ceil(count($model->getFilterBy($_GET)) / 20);
+        $data['lastPage'] = $model->getLastPage($_GET);
         $data['order'] = $model->getOrderIndex($_GET);
         $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $data['roles'] = $modelRol->getAllRoles();

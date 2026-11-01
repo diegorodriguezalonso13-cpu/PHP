@@ -112,36 +112,43 @@ declare(strict_types=1);
         </div>
     <?php }; ?>
         <div class="card-footer">
-            <p>Paginas:<?php echo $paginates ?></p>
             <nav aria-label="Navegacion por paginas">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link" href="/preparedStatement?page=1&<?php echo $queryParams?>" aria-label="First">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">First</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="/preparedStatement?page=2" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-
-                    <li class="page-item active"><a class="page-link" href="#"><?php echo $page ?></a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="/preparedStatement?page=4" aria-label="Next">
-                            <span aria-hidden="true">&gt;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="/preparedStatement?page=<?php echo $lastPage ?>&<?php echo $queryParams?>" aria-label="Last">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Last</span>
-                        </a>
-                    </li>
-                </ul>
+<!--                --><?php
+//                require_once '../app/Helpers/formulario_helper.php';
+//                echo paginado(
+//                    $lastPage,
+//                    $page,
+//                    $queryParams
+//                );
+//                ?>
+<!--                <ul class="pagination justify-content-center">-->
+<!--                    <li class="page-item">-->
+<!--                        <a class="page-link" href="/preparedStatement?page=1&--><?php //echo $queryParams?><!--" aria-label="First">-->
+<!--                            <span aria-hidden="true">&laquo;</span>-->
+<!--                            <span class="sr-only">First</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="page-item">-->
+<!--                        <a class="page-link" href="/preparedStatement?page=2" aria-label="Previous">-->
+<!--                            <span aria-hidden="true">&lt;</span>-->
+<!--                            <span class="sr-only">Previous</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!---->
+<!--                    <li class="page-item active"><a class="page-link" href="#">--><?php //echo $page ?><!--</a></li>-->
+<!--                    <li class="page-item">-->
+<!--                        <a class="page-link" href="/preparedStatement?page=4" aria-label="Next">-->
+<!--                            <span aria-hidden="true">&gt;</span>-->
+<!--                            <span class="sr-only">Next</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="page-item">-->
+<!--                        <a class="page-link" href="/preparedStatement?page=--><?php //echo $lastPage ?><!--&--><?php //echo $queryParams?><!--" aria-label="Last">-->
+<!--                            <span aria-hidden="true">&raquo;</span>-->
+<!--                            <span class="sr-only">Last</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
             </nav>
         </div>
     </div>
