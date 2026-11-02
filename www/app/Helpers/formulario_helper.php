@@ -41,52 +41,41 @@ if (!function_exists('paginado')) {
 
     function paginado(int $pages, int $currentPage = 1, string $queryParams = '', ?string $baseUrl = null): string
     {
-        $resultado = '<ul class="pagination justify-content-center">"';
+        $resultado = '<ul class="pagination justify-content-center">';
         if ($baseUrl === null) {
             $baseUrl = strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
         }
 
-        if ($currentPage === 1) {
-            $urlPaginado = "{$baseUrl}?page={$currentPage}";
+        if ($currentPage !== 1) {
+            $urlPaginado = "{$baseUrl}?page=1";
             $urlPaginado .= ($queryParams === '') ? '' : "&$queryParams";
-            $resultado .= '<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='First'><span aria-hidden='true'>&laquo;</span>
-                                <span class='sr-only'>First</span></a>" . '</li>';
-            $resultado .= '<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='Next'>
-                            <span aria-hidden='true'>&gt;</span>
-                            <span class='sr-only'>Next</span></a>". '</li>';
-            $resultado .= '<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='Last'>
-                            <span aria-hidden='true'>&raquo;</span>
-                            <span class='sr-only'>Last</span></a>" . '</li>';
 
-        } elseif ($currentPage > 1 && $currentPage < $pages) {
-            $urlPaginado = "{$baseUrl}?page={$currentPage}";
-            $urlPaginado .= ($queryParams === '') ? '' : "&$queryParams";
-            $resultado .= '<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='First'><span aria-hidden='true'>&laquo;</span>
+            $resultado .= '<li class="page-item">' . "<a class='page-link' href=\"$urlPaginado\" aria-label='First'><span aria-hidden='true'>&laquo;</span>
                                 <span class='sr-only'>First</span></a>" . '</li>';
-            $resultado .='<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='Previous'>
+
+            $urlPaginado = "{$baseUrl}?page=" . ($currentPage - 1);
+            $urlPaginado .= ($queryParams === '') ? '' : "&$queryParams";
+            $resultado .= '<li class="page-item">' . "<a class='page-link' href=\"$urlPaginado\" aria-label='Previous'>
                             <span aria-hidden='true'>&lt;</span>
                             <span class='sr-only'>Previous</span>
                         </a>" . '</li>';
-            $resultado .= '<li class="page-item">' . "<a class='page-link' href='#'><?php echo $currentPage ?></a>" . '</li>';
+        }
+        $urlPaginado = "{$baseUrl}?page={$currentPage}";
+        $urlPaginado .= ($queryParams === '') ? '' : "&$queryParams";
 
-            $resultado .= '<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='Next'>
-                            <span aria-hidden='true'>&gt;</span>
-                            <span class='sr-only'>Next</span></a>". '</li>';
-            $resultado .= '<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='Last'>
-                            <span aria-hidden='true'>&raquo;</span>
-                            <span class='sr-only'>Last</span></a>" . '</li>';
+        $resultado .= '<li class="page-item">' . "<a class='page-link' class='page-link' href=\"$urlPaginado\">$currentPage</a>" . '</li>';
 
-        } elseif ($currentPage === $pages) {
-            $urlPaginado = "{$baseUrl}?page={$currentPage}";
+        if ($currentPage !== $pages) {
+            $urlPaginado = "{$baseUrl}?page=" . ($currentPage + 1);
             $urlPaginado .= ($queryParams === '') ? '' : "&$queryParams";
-            $resultado .= '<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='First'><span aria-hidden='true'>&laquo;</span>
-                                <span class='sr-only'>First</span></a>" . '</li>';
-            $resultado .='<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='Previous'>
-                            <span aria-hidden='true'>&lt;</span>
-                            <span class='sr-only'>Previous</span>
-                        </a>" . '</li>';
 
-            $resultado .= '<li class="page-item">' . "<a href=\"$urlPaginado\" aria-label='Last'>
+            $resultado .= '<li class="page-item">' . "<a class='page-link'  href=\"$urlPaginado\" aria-label='Next'>
+                            <span aria-hidden='true'>&gt;</span>
+                            <span class='sr-only'>Next</span></a>" . '</li>';
+
+            $urlPaginado = "{$baseUrl}?page={$pages}";
+            $urlPaginado .= ($queryParams === '') ? '' : "&$queryParams";
+            $resultado .= '<li class="page-item">' . "<a class='page-link' href=\"$urlPaginado\" aria-label='Last'>
                             <span aria-hidden='true'>&raquo;</span>
                             <span class='sr-only'>Last</span></a>" . '</li>';
         }

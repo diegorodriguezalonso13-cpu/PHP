@@ -39,7 +39,7 @@ class TrabajadorModel extends BaseDbModel
 
     private function filters(array $filtros): array
     {
-        $sql =self::FROM;
+        $sql = self::FROM;
         $values = [];
         $condiciones = [];
         if (!empty($filtros['username'])) {
@@ -106,7 +106,6 @@ class TrabajadorModel extends BaseDbModel
         $aux = $this->filters($filtros);
         $sql = self::SELECT_COUNT . $aux['sql'];
         $values = $aux['values'];
-        //Aquí Rafa llama a current page pero no le veo la utilidad.
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($values);
         return $stmt->fetchColumn(0);
