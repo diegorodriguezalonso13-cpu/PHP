@@ -286,6 +286,14 @@ class FrontController
             },
             'get'
         );
+        Route::add(
+            '/usuariosSistema',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->prepStmt2();
+            },
+            'get'
+        );
 
         Route::add(
             '/demo-proveedores',
