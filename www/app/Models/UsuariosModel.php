@@ -17,4 +17,10 @@ class UsuariosModel extends BaseDbModel
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
+    public function getAllRoles(): array
+    {
+        $sql = "SELECT * FROM aux_rol";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll();
+    }
 }

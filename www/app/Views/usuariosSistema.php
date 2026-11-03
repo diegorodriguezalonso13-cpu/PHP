@@ -21,19 +21,19 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="name">Nombre (NA):</label>
-                                <input type="text" class="form-control" name="name" id="name" value="<?php echo $input['username'] ?? ''; ?>" />
+                                <input type="text" class="form-control" name="name" id="name" value="<?php echo $input['name'] ?? ''; ?>" />
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="salarioBruto">Email (NA):</label>
-                                <input type="text" class="form-control" name="username" id="username" value="<?php echo $input['username'] ?? ''; ?>" />
+                                <input type="text" class="form-control" name="email" id="email" value="<?php echo $input['email'] ?? ''; ?>" />
                             </div>
                         </div>
                         <div class="col-12 col-lg-3">
                             <div class="mb-3">
                                 <label for="id_rol">Idioma (NA):</label>
-                                <select name="id_rol" id="id_rol" class="form-control" data-placeholder="Tipo proveedor">
+                                <select name="idioma" id="idioma" class="form-control" data-placeholder="Tipo proveedor">
                                     <option value=""selected>-</option>
                                     <?php foreach ($roles as $rol) {
                                         if ($input['id_rol'] == $rol['id_rol']) { ?>
@@ -47,13 +47,13 @@ declare(strict_types=1);
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
-                                <label for="id_country">Rol (NA):</label>
-                                <select name="id_country[]" id="id_country" class="form-control select2" data-placeholder="Afghanistan,Albania,..." multiple>
-                                    <?php foreach ($countries as $country) {
-                                        if (isset($input['id_country']) && in_array($country['id'], $input['id_country'])) { ?>
-                                            <option value="<?php echo $country['id']; ?>" selected><?php echo $country['country_name']; ?></option>
+                                <label for="id_rol">Rol (NA):</label>
+                                <select name="id_rol" id="id_rol" class="form-control select2" data-placeholder="Administrador,Staff..." multiple>
+                                    <?php foreach ($roles as $rol) {
+                                        if (isset($input['id_rol']) && in_array($rol['id_rol'], $input['id_country'])) { ?>
+                                            <option value="<?php echo $rol['id_rol']; ?>" selected><?php echo $rol['rol']; ?></option>
                                         <?php } else { ?>
-                                            <option value="<?php echo $country['id']?>"><?php echo $country['country_name'];?></option>
+                                            <option value="<?php echo $rol['id_rol']?>"><?php echo $rol['rol'];?></option>
                                         <?php }
                                     };?>
                                 </select>
@@ -61,9 +61,9 @@ declare(strict_types=1);
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
-                                <label for="retencionIRPF">Último acceso (NA):</label>
-                                <input type="text" class="form-control" name="retencionIRPFMax" id="retencionIRPFMax" value="<?php echo $input['retencionIRPFMax'] ?? ''; ?>" placeholder="Máximo" /><br/>
-                                <input type="text" class="form-control" name="retencionIRPFMin" id="retencionIRPFMin" value="<?php echo $input['retencionIRPFMin'] ?? ''; ?>" placeholder="Mínimo" />
+                                <label for="last_date">Último acceso (NA):</label>
+                                <input type="text" class="form-control" name="last_date_max" id="last_date_max" value="<?php echo $input['retencionIRPFMax'] ?? ''; ?>" placeholder="Última fecha" /><br/>
+                                <input type="text" class="form-control" name="last_date_min" id="last_date_min" value="<?php echo $input['retencionIRPFMin'] ?? ''; ?>" placeholder="Primera fecha" />
                             </div>
                         </div>
                     </div>
