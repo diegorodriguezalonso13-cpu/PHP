@@ -32,25 +32,21 @@ declare(strict_types=1);
                         </div>
                         <div class="col-12 col-lg-3">
                             <div class="mb-3">
-                                <label for="id_rol">Idioma (NA):</label>
+                                <label for="idioma">Idioma (NA):</label>
                                 <select name="idioma" id="idioma" class="form-control" data-placeholder="Tipo proveedor">
                                     <option value=""selected>-</option>
-                                    <?php foreach ($roles as $rol) {
-                                        if ($input['id_rol'] == $rol['id_rol']) { ?>
-                                            <option value="<?php echo $rol['id_rol']; ?>" selected><?php echo $rol['nombre_rol']; ?></option>
-                                        <?php } else { ?>
-                                            <option value="<?php echo $rol['id_rol']?>"><?php echo $rol['nombre_rol'];?></option>
-                                        <?php }
-                                    };?>
+                                    <?php foreach ($idiomas as $idioma):?>
+                                        <option value="<?php echo $idioma['idioma']; ?>"<?php echo (isset($input['idioma']) && $input['idioma'] == $idioma['idioma']) ? ' selected' : ''; ?>><?php echo $idioma['idioma']; ?></option>
+                                        <?php endforeach;?>
                                 </select>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="id_rol">Rol (NA):</label>
-                                <select name="id_rol" id="id_rol" class="form-control select2" data-placeholder="Administrador,Staff..." multiple>
+                                <select name="id_rol[]" id="id_rol" class="form-control select2" data-placeholder="Administrador,Staff..." multiple>
                                     <?php foreach ($roles as $rol) {
-                                        if (isset($input['id_rol']) && in_array($rol['id_rol'], $input['id_country'])) { ?>
+                                        if (isset($input['id_rol']) && in_array($rol['id_rol'], $input['id_rol'])) { ?>
                                             <option value="<?php echo $rol['id_rol']; ?>" selected><?php echo $rol['rol']; ?></option>
                                         <?php } else { ?>
                                             <option value="<?php echo $rol['id_rol']?>"><?php echo $rol['rol'];?></option>
@@ -62,8 +58,14 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="last_date">Último acceso (NA):</label>
-                                <input type="text" class="form-control" name="last_date_max" id="last_date_max" value="<?php echo $input['retencionIRPFMax'] ?? ''; ?>" placeholder="Última fecha" /><br/>
-                                <input type="text" class="form-control" name="last_date_min" id="last_date_min" value="<?php echo $input['retencionIRPFMin'] ?? ''; ?>" placeholder="Primera fecha" />
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                <input type="text" class="form-control" name="last_date_min" id="last_date_min" value="<?php echo $input['retencionIRPFMin'] ?? ''; ?>" placeholder="Desde..." />
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <input type="text" class="form-control" name="last_date_max" id="last_date_max" value="<?php echo $input['retencionIRPFMax'] ?? ''; ?>" placeholder="Hasta..." />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,6 +104,7 @@ declare(strict_types=1);
                 <td><?php echo $datos['idioma']?></td>
                 <td><?php echo $datos['rol']?></td>
                 <td><?php echo $datos['last_date']?></td>
+                <td><i class="fa-solid fa-pen-to-square"></i></td>
                 </tr>
             <?php } ?>
             </tbody>

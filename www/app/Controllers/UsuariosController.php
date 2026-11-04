@@ -16,8 +16,10 @@ class UsuariosController extends BaseController
             'breadcrumb' => ['Inicio', 'Ordenar'],
         );
         $model = new UsuariosModel();
-        $data['usuarios'] = $model->getAllUsuarios();
+        $data['usuarios'] = $model->getFilterBy($_GET);
         $data['roles'] = $model->getAllRoles();
+        $data['idiomas'] = $model->getAllIdiomas();
+
         $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $data['input'] = $input;
         $this->view->showViews(array('templates/header.view.php', 'usuariosSistema.php', 'templates/footer.view.php'), $data);
