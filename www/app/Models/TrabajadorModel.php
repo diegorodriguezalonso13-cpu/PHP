@@ -100,7 +100,7 @@ class TrabajadorModel extends BaseDbModel
         $stmt->execute($values);
         return $stmt->fetchAll();
     }
-    public function getNumeroPaginas(array $filtros): int
+    public function getNumeroRegistros(array $filtros): int
     {
 
         $aux = $this->filters($filtros);
@@ -127,7 +127,7 @@ class TrabajadorModel extends BaseDbModel
     }
     public function getLastPage(array $filtros): int
     {
-        return (int)ceil($this->getNumeroPaginas($filtros) / self::DEFAULT_ITEMS_QUANTITY);
+        return (int)ceil($this->getNumeroRegistros($filtros) / self::DEFAULT_ITEMS_QUANTITY);
     }
 //    public function getTrabajadoresByName($username): array
 //    {

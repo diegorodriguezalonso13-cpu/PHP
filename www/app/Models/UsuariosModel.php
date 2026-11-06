@@ -9,7 +9,11 @@ use Com\Daw2\Core\BaseDbModel;
 class UsuariosModel extends BaseDbModel
 {
     private const SELECT = "SELECT us.*, ar.rol";
+    private const SELECT_COUNT = "SELECT COUNT(*) as total";
     private const string FROM = " FROM usuario_sistema us LEFT JOIN aux_rol ar ON ar.id_rol = us.id_rol ";
+    private const DEFAULT_ORDER_INDEX = 1;
+    private const ORDER_FIELDS = ['us.nombre','us.email','us.idioma','ar.rol','us.last_date'];
+    private const DEFAULT_ITEMS_QUANTITY = 20;
 
     public function getAllUsuarios(): array
     {
@@ -48,7 +52,6 @@ class UsuariosModel extends BaseDbModel
             $values["idioma"] = "%" . $filtros['idioma'] . "%";
         }
 
-
         if (!empty($filtros['id_rol']) && is_array($filtros['id_rol'])) {
             $roles = [];
             $i = 1;
@@ -61,8 +64,6 @@ class UsuariosModel extends BaseDbModel
             $values = array_merge($values, $roles);
         }
 
-
-
         if (!empty($filtros['last_date_max'])) {
             $condiciones[] = " us.ultimo_acceso <= :last_date_max ";
             $values["last_date_max"] = $filtros['last_date_max'];
@@ -71,11 +72,13 @@ class UsuariosModel extends BaseDbModel
             $condiciones[] = " us.ultimo_acceso >= :last_date_min ";
             $values["last_date_min"] = $filtros['last_date_in'];
         }
+
         //Aquí se aplican los filtros en la consulta
         if (!empty($condiciones)) {
             $sql .= " WHERE " . implode(" AND ", $condiciones);
         }
-        //TODO: meter la ordenación aquí
+        $sentido = !empty($filtros['sentido']) && $filtros['sentido'] === 'desc' ? 'DESC' : 'ASC';
+        $sql .= " ORDER BY " . self::ORDER_FIELDS[$this->getOrderIndex($filtros) - 1] . " $sentido";
 
         return ['sql' => $sql, 'values' => $values];
     }
@@ -84,9 +87,40 @@ class UsuariosModel extends BaseDbModel
         $aux = $this->getFilters($filtros);
         $sql = self::SELECT . $aux['sql'];
         $values = $aux['values'];
-        //TODO meter el paginado aquí
+        $paginaActual = $this->getPage($filtros);
+        $inicio = self::DEFAULT_ITEMS_QUANTITY * ($paginaActual - 1);
+        $sql .= " LIMIT " . $inicio . " ," . self::DEFAULT_ITEMS_QUANTITY;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($values);
         return $stmt->fetchAll();
+    }
+    public function getNumeroRegistros(array $filtros): int
+    {
+
+        $aux = $this->getFilters($filtros);
+        $sql = self::SELECT_COUNT . $aux['sql'];
+        $values = $aux['values'];
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($values);
+        return $stmt->fetchColumn(0);
+    }
+
+    public function getOrderIndex(array $filtros): int
+    {
+        if (empty($filtros['order'])) {
+            return self::DEFAULT_ORDER_INDEX;
+        } elseif (filter_var($filtros['order'], FILTER_VALIDATE_INT) === false || $filtros['order'] < 1 || $filtros['order'] > count(self::ORDER_FIELDS)) {
+            return self::DEFAULT_ORDER_INDEX;
+        } else {
+            return (int)$filtros['order'];
+        }
+    }
+    public function getPage(array $filtros): int
+    {
+        return !empty($filtros['page']) && filter_var($filtros['page'], FILTER_VALIDATE_INT) ? (int)$filtros['page'] : 1;
+    }
+    public function getLastPage(array $filtros): int
+    {
+        return (int)ceil($this->getNumeroRegistros($filtros) / self::DEFAULT_ITEMS_QUANTITY);
     }
 }

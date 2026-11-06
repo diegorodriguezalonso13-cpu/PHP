@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 ?>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
 <div class="row">
     <div class="col-12">
         <div class="card shadow mb-4">
@@ -20,19 +23,19 @@ declare(strict_types=1);
                     <div class="row">
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
-                                <label for="name">Nombre (NA):</label>
+                                <label for="name">Nombre:</label>
                                 <input type="text" class="form-control" name="name" id="name" value="<?php echo $input['name'] ?? ''; ?>" />
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
-                                <label for="salarioBruto">Email (NA):</label>
+                                <label for="salarioBruto">Email:</label>
                                 <input type="text" class="form-control" name="email" id="email" value="<?php echo $input['email'] ?? ''; ?>" />
                             </div>
                         </div>
                         <div class="col-12 col-lg-3">
                             <div class="mb-3">
-                                <label for="idioma">Idioma (NA):</label>
+                                <label for="idioma">Idioma:</label>
                                 <select name="idioma" id="idioma" class="form-control" data-placeholder="Tipo proveedor">
                                     <option value=""selected>-</option>
                                     <?php foreach ($idiomas as $idioma):?>
@@ -43,7 +46,7 @@ declare(strict_types=1);
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
-                                <label for="id_rol">Rol (NA):</label>
+                                <label for="id_rol">Rol:</label>
                                 <select name="id_rol[]" id="id_rol" class="form-control select2" data-placeholder="Administrador,Staff..." multiple>
                                     <?php foreach ($roles as $rol) {
                                         if (isset($input['id_rol']) && in_array($rol['id_rol'], $input['id_rol'])) { ?>
@@ -86,25 +89,35 @@ declare(strict_types=1);
     ?>
     <div class="col-12">
         <table class="table table-striped">
-<!--            --><?php
-//            require_once '../app/Helpers/formulario_helper.php';
-//            echo printTableHeader(
-//                ['Nombre', 'Email', 'Idioma', 'Rol', 'Último acceso'],
-//                $order,
-//                $input['sentido'] ?? null,
-//                $queryParams
-//            );
-//            ?>
+            <?php
+            require_once '../app/Helpers/formulario_helper.php';
+            echo printTableHeader(
+                ['Nombre', 'Email', 'Idioma', 'Rol', 'Último acceso','Acciones'],
+                $order,
+                $input['sentido'] ?? null,
+                $queryParams
+            );
+            ?>
             <tbody>
             <?php
             foreach ($usuarios as  $datos) {
-                ?><tr class="<?php echo $datos['baja'] ? '' : 'bg-danger'; ?>">
+                ?><tr class="<?php echo $datos['baja'] ? 'bg-danger' : ''; ?>">
                 <td><?php echo $datos['nombre']?></td>
                 <td><?php echo $datos['email']?></td>
                 <td><?php echo $datos['idioma']?></td>
                 <td><?php echo $datos['rol']?></td>
                 <td><?php echo $datos['last_date']?></td>
-                <td><i class="fa-solid fa-pen-to-square"></i></td>
+                <td>
+                    <a href="/usuariosSistema/edit/<?php echo $datos['id_usuario'] ?>" class="btn btn-sm btn-primary" title="Editar">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a href="mailto:<?php echo $datos['email']?>" class="btn btn-sm btn-info" title="Enviar correo">
+                        <i class="fa-solid fa-square-envelope"></i>
+                    </a>
+
+                    <a href="/usuariosSistema/delete/<?php echo $datos['id_usuario'] ?>" class="btn btn-sm btn-danger" title="Eliminar">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
                 </tr>
             <?php } ?>
             </tbody>
@@ -119,20 +132,20 @@ declare(strict_types=1);
 <!--        //FIN TABLA CON RESULTADOS-->
 <!--        //INICIO NAVEGACIÓN POR PAGINAS-->
 <!--        TODO: Crear esas variables y debería ir bien-->
-<!--        <div class="card-footer">-->
-<!--            <nav aria-label="Navegacion por paginas">-->
-<!--                --><?php
-//
-//                require_once '../app/Helpers/formulario_helper.php';
-//                echo paginado(
-//                    $lastPage,
-//                    $page,
-//                    $queryParamsPages
-//                );
-//                ?>
-<!---->
-<!--            </nav>-->
-<!--        </div>-->
+        <div class="card-footer">
+            <nav aria-label="Navegacion por paginas">
+                <?php
+
+                require_once '../app/Helpers/formulario_helper.php';
+                echo paginado(
+                    $lastPage,
+                    $page,
+                    $queryParamsPages
+                );
+                ?>
+
+            </nav>
+        </div>
 <!--        //FIN NAVEGACIÓN POR PAGINAS-->
     </div>
 
