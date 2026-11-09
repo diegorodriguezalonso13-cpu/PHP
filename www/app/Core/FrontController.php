@@ -294,6 +294,14 @@ class FrontController
             },
             'get'
         );
+        Route::add(
+            '/preparedStatement1/new/',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\NuevoTrabajadorController();
+                $controlador->nuevoTrabajdor();
+            },
+            'get'
+        );
 
         Route::add(
             '/demo-proveedores',

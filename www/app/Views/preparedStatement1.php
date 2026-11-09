@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 ?>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
 <div class="row">
     <div class="col-12">
         <div class="card shadow mb-4">
@@ -10,6 +13,9 @@ declare(strict_types=1);
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
+                    <a href="/preparedStatement1/new" class="btn btn-sm btn-primary ml-auto" data-toggle="tooltip" data-placement="top" title="Añadir trabajador">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </a>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
@@ -93,13 +99,20 @@ declare(strict_types=1);
             <tbody>
             <?php
             foreach ($trabajadores as $trabajador => $datos) {
-                ?><tr>
+                ?><tr class="<?php echo $datos['activo'] ? '' : 'bg-danger'; ?>">
                 <td><?php echo $datos['username']?></td>
                 <td><?php echo $datos['salarioBruto']?></td>
                 <td><?php echo $datos['retencionIRPF']?></td>
-                <td><?php echo $datos['activo']?></td>
                 <td><?php echo $datos['nombre_rol']?></td>
                 <td><?php echo $datos['country_name']?></td>
+                <td>
+                    <a href="/usuariosSistema/edit/<?php echo $datos['username'] ?>" class="btn btn-sm btn-primary" title="Editar">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a href="/usuariosSistema/delete/<?php echo $datos['username'] ?>" class="btn btn-sm btn-danger" title="Eliminar">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </tr>
                 </tr>
             <?php } ?>
             </tbody>

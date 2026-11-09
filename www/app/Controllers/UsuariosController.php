@@ -14,6 +14,7 @@ class UsuariosController extends BaseController
         $data = array(
             'titulo' => 'Usuarios del sistema',
             'breadcrumb' => ['Inicio', 'Ordenar'],
+            'js' => ['assets/js/pages/usuarios-sistema.js']
         );
         $model = new UsuariosModel();
         $data['usuarios'] = $model->getFilterBy($_GET);

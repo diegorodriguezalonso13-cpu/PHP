@@ -13,7 +13,7 @@ class UsuariosModel extends BaseDbModel
     private const string FROM = " FROM usuario_sistema us LEFT JOIN aux_rol ar ON ar.id_rol = us.id_rol ";
     private const DEFAULT_ORDER_INDEX = 1;
     private const ORDER_FIELDS = ['us.nombre','us.email','us.idioma','ar.rol','us.last_date'];
-    private const DEFAULT_ITEMS_QUANTITY = 20;
+    private const DEFAULT_ITEMS_QUANTITY =1;
 
     public function getAllUsuarios(): array
     {
@@ -65,13 +65,34 @@ class UsuariosModel extends BaseDbModel
         }
 
         if (!empty($filtros['last_date_max'])) {
-            $condiciones[] = " us.ultimo_acceso <= :last_date_max ";
-            $values["last_date_max"] = $filtros['last_date_max'];
+            $fechaReciente= \DateTimeImmutable::createFromFormat('d/m/Y',$filtros['last_date_max']);
+            if($fechaReciente !==false) {
+                $condiciones[] = " us.last_date <= :last_date_max ";
+                $values["last_date_max"] = $filtros['last_date_max'];
+            }
         }
         if (!empty($filtros['last_date_min'])) {
-            $condiciones[] = " us.ultimo_acceso >= :last_date_min ";
-            $values["last_date_min"] = $filtros['last_date_in'];
+            $fechaAntigua= \DateTimeImmutable::createFromFormat('d/m/Y',$filtros['last_date_min']);
+            if($fechaAntigua !==false) {
+                $condiciones[] = " us.last_date >= :last_date_min ";
+                $values["last_date_min"] = $filtros['last_date_in'];
+            }
         }
+        //TODO esto de abajo es para poner bien el formato de las fechas
+//        if(!empty($filtros['last_date_from'])){
+//            $fromdate = \DateTimeImmutable::createFromFormat('d/m/Y H:i:s', $filtros['last_date_from']);
+//            if ($fromdate !== false) {
+//                $condiciones[] = 'u.last_date >= :last_date_from';
+//                $values['last_date_from'] = $fromdate->format('Y-m-d H:i:s');
+//            }
+//        }
+//        if(!empty($filtros['last_date_to'])){
+//            $toDate = \DateTimeImmutable::createFromFormat('d/m/Y H:i:s', $filtros['last_date_to']);
+//            if ($toDate !== false) {
+//                $condiciones[] = 'u.last_date >= :last_date_to';
+//                $values['last_date_to'] = $toDate->format('Y-m-d H:i:s');
+//            }
+//        }
 
         //Aquí se aplican los filtros en la consulta
         if (!empty($condiciones)) {
