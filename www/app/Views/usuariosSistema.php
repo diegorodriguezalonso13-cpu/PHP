@@ -110,7 +110,7 @@ declare(strict_types=1);
                 <td><?php echo $datos['email']?></td>
                 <td><?php echo $datos['idioma']?></td>
                 <td><?php echo $datos['rol']?></td>
-                <td><?php echo !empty($usuario['last_date']) ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $usuario['last_date'])->format('d/m/y H:i:s') : '-'?></td>
+                <td><?php echo !empty($datos['last_date']) ? \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $datos['last_date'])->format('d/m/y H:i:s') : '-'?></td>
                 <td>
                     <a href="/usuariosSistema/edit/<?php echo $datos['id_usuario'] ?>" class="btn btn-sm btn-primary" title="Editar">
                         <i class="fa-solid fa-pen-to-square"></i>
