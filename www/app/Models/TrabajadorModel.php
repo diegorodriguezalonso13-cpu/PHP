@@ -12,8 +12,6 @@ class TrabajadorModel extends BaseDbModel
     private const array ORDER_FIELDS = ['t.username', 't.salarioBruto', 't.retencionIRPF', 'nombre_rol', 'country_name'];
     private const DEFAULT_ORDER_INDEX = 1;
     private const DEFAULT_ITEMS_QUANTITY = 20;
-
-    private const DEFAULT_PAGE_NUMBER = 1;
     private const SELECT = "SELECT t.*, art.nombre_rol, ac.country_name";
     private const SELECT_COUNT = "SELECT COUNT(*) as total";
     private const string FROM = " FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country";
@@ -129,25 +127,35 @@ class TrabajadorModel extends BaseDbModel
     {
         return (int)ceil($this->getNumeroRegistros($filtros) / self::DEFAULT_ITEMS_QUANTITY);
     }
-//    public function getTrabajadoresByName($username): array
-//    {
-//        $sql = self::SELECT_FROM . " WHERE username LIKE :username ";
-//        $stmt = $this->pdo->prepare($sql);
-//        $stmt->execute(['username' => "%{$username}%"]);
-//        return $stmt->fetchAll();
-//    }
-//    public function getTrabajadoresByRol($id_rol): array
-//    {
-//        $sql = self::SELECT_FROM . " WHERE t.id_rol LIKE :id_rol ";
-//        $stmt = $this->pdo->prepare($sql);
-//        $stmt->execute(['id_rol' => "$id_rol"]);
-//        return $stmt->fetchAll();
-//    }
-//
-//    public function getTrabajadoresBySalario(): array
-//    {
-//        $sql = self::SELECT_FROM;
-//        $stmt = $this->pdo->query($sql);
-//        return $stmt->fetchAll();
-//    }
+
+    private function isEmpty(array $newTrabajador): array
+    {
+        $valoresVacios=[];
+        foreach ($newTrabajador as $key => $value) {
+            if(empty(trim($value))){
+                $valoresVacios[]='Introduce valores para este campo';
+            }
+        }
+        return $valoresVacios;
+    }
+    private function checkNewTrabajador(array $newTrabajador): array
+    {
+        $errores=[];
+
+
+        if(is_bool($newTrabajador['activo'])){
+            return $newTrabajador['activo'];
+        }else{
+            $errores['activo'] = 'El valor activo no es válido';
+        }
+        return $errores;
+    }
+
+    public function addTrabajador(array $newTrabajador): array{
+        $errores=$this->checkNewTrabajador($newTrabajador);
+        if(empty($errores)){
+            //TODO meter la inserción porque todo está bien
+        }
+        return $errores;
+    }
 }

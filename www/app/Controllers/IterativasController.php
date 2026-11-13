@@ -138,7 +138,7 @@ class IterativasController  extends BaseController
         }
         return true;
     }
-    private function montarMatriz(array $arrayNumero,int $numColumnas): array
+    private function montarMatriz(array $arrayNumero,int $numColumnas)
     {
         $matriz=[];
         $aux=[];

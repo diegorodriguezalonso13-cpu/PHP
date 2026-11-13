@@ -20,10 +20,15 @@ class NuevoTrabajadorController extends BaseController
         $model = new TrabajadorModel();
         $modelRol = new AuxRolTrabajadorModel();
         $modelCountry = new AuxCountryModel();
+        //$model->addTrabajador($_GET);
         $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $data['roles'] = $modelRol->getAllRoles();
         $data['countries'] = $modelCountry->getAllCountries();
         $data['input'] = $input;
         $this->view->showViews(array('templates/header.view.php', 'nuevoTrabajador.php', 'templates/footer.view.php'), $data);
+    }
+    public function doNuevoTrabajador(): void
+    {
+        $this->nuevoTrabajdor();
     }
 }

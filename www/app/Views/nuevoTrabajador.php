@@ -66,9 +66,12 @@ declare(strict_types=1);
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="activo" data-gtm-form-interact-field-id="0">
-                                <label class="custom-control-label" for="activo">Activo</label>
+                            <div class="mb-3">
+                                <label for="activo">Activo:</label>
+                                <div class="custom-control custom-switch" style="zoom: 1.4">
+                                    <input type="checkbox" class="custom-control-input" name="activo" id="activo" data-gtm-form-interact-field-id="0" checked>
+                                    <label class="custom-control-label" for="activo"></label>
+                                </div>
                             </div>
                         </div>
                     </div>
