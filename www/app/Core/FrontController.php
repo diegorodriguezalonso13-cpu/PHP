@@ -302,6 +302,14 @@ class FrontController
             },
             'get'
         );
+        Route::add(
+            '/preparedStatement1/edit/([\p{L}0-9_]{4,50})',
+            function ($username) {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->editTrabajador($username);
+            },
+            'get'
+        );
 
         Route::add(
             '/demo-proveedores',

@@ -48,7 +48,7 @@ declare(strict_types=1);
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="id_country">País:</label>
-                                <select name="id_country" id="id_country" class="form-control select2" data-placeholder="Afghanistan,Albania,..." multiple>
+                                <select name="id_country" id="id_country" class="form-control select2" data-placeholder="Afghanistan,Albania,...">
                                     <?php foreach ($countries as $country) {
                                         if (isset($input['id_country']) && in_array($country['id'], $input['id_country'])) { ?>
                                             <option value="<?php echo $country['id']; ?>" selected><?php echo $country['country_name']; ?></option>

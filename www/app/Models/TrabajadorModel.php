@@ -130,32 +130,38 @@ class TrabajadorModel extends BaseDbModel
 
     private function isEmpty(array $newTrabajador): array
     {
-        $valoresVacios=[];
+        $valoresVacios = [];
         foreach ($newTrabajador as $key => $value) {
-            if(empty(trim($value))){
-                $valoresVacios[]='Introduce valores para este campo';
+            if (empty(trim($value))) {
+                $valoresVacios[] = [$key => 'Introduce valores para este campo'];
             }
         }
         return $valoresVacios;
     }
     private function checkNewTrabajador(array $newTrabajador): array
     {
-        $errores=[];
+        $errores = [];
 
 
-        if(is_bool($newTrabajador['activo'])){
-            return $newTrabajador['activo'];
-        }else{
+        if (!is_bool($newTrabajador['activo'])) {
             $errores['activo'] = 'El valor activo no es válido';
         }
         return $errores;
     }
 
-    public function addTrabajador(array $newTrabajador): array{
-        $errores=$this->checkNewTrabajador($newTrabajador);
-        if(empty($errores)){
+    public function addTrabajador(array $newTrabajador): array
+    {
+        $errores = $this->checkNewTrabajador($newTrabajador);
+        if (empty($errores)) {
             //TODO meter la inserción porque todo está bien
         }
         return $errores;
+    }
+    public function obtenerUnTrabajador(string $claveTrabajador): array
+    {
+        $sql ='SELECT * FROM trabajadores WHERE username = :username';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $claveTrabajador]);
+        return $stmt->fetch();
     }
 }

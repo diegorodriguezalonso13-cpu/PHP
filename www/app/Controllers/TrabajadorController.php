@@ -49,13 +49,6 @@ class TrabajadorController extends BaseController
         $model = new TrabajadorModel();
         $modelRol = new AuxRolTrabajadorModel();
         $modelCountry = new AuxCountryModel();
-//        if ($username === '' && $id_rol === '') {
-//            $data['trabajadores'] = $model->getAllTrabajadores();
-//        } elseif ($id_rol === '') {
-//            $data['trabajadores'] = $model->getTrabajadoresByName($username);
-//        } elseif ($username === '') {
-//            $data['trabajadores'] = $model->getTrabajadoresByRol($id_rol);
-//        }
 
         //http_build_query(array): string
         $data['trabajadores'] = $model->getFilterBy($_GET);
@@ -75,5 +68,20 @@ class TrabajadorController extends BaseController
         unset($getPages['page']);
         $data['queryParamsPages'] = http_build_query($getPages);
         $this->view->showViews(array('templates/header.view.php', 'preparedStatement1.php', 'templates/footer.view.php'), $data);
+    }
+    public function editTrabajador(string $username): void
+    {
+        $data = array(
+            'titulo' => 'Trabajador',
+            'breadcrumb' => ['Inicio', 'Consultas simples'],
+        );
+        $model = new TrabajadorModel();
+        $modelRol = new AuxRolTrabajadorModel();
+        $modelCountry = new AuxCountryModel();
+        $data['roles'] = $modelRol->getAllRoles();
+        $data['countries'] = $modelCountry->getAllCountries();
+        $input = $model->obtenerUnTrabajador($username);
+        $data['input'] = $input;
+        $this->view->showViews(array('templates/header.view.php', 'editarTrabajador.php', 'templates/footer.view.php'), $data);
     }
 }

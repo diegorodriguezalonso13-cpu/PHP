@@ -106,10 +106,10 @@ declare(strict_types=1);
                 <td><?php echo $datos['nombre_rol']?></td>
                 <td><?php echo $datos['country_name']?></td>
                 <td>
-                    <a href="/usuariosSistema/edit/<?php echo $datos['username'] ?>" class="btn btn-sm btn-primary" title="Editar">
+                    <a href="/preparedStatement1/edit/<?php echo $datos['username'] ?>" class="btn btn-sm btn-primary" title="Editar">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a href="/usuariosSistema/delete/<?php echo $datos['username'] ?>" class="btn btn-sm btn-danger" title="Eliminar">
+                    <a href="/preparedStatement1/delete/<?php echo $datos['username'] ?>" class="btn btn-sm btn-danger" title="Eliminar">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
                 </tr>
