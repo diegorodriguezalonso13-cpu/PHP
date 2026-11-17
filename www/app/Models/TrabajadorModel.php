@@ -157,6 +157,7 @@ class TrabajadorModel extends BaseDbModel
     {
         $sql="update trabajadores
         set  =
-        where;"
+        where;";
+        return true;
     }
 }
