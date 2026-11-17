@@ -15,6 +15,7 @@ class TrabajadorModel extends BaseDbModel
     private const SELECT = "SELECT t.*, art.nombre_rol, ac.country_name";
     private const SELECT_COUNT = "SELECT COUNT(*) as total";
     private const string FROM = " FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country";
+    private array $allowedFields = ['username', 'salarioBruto', 'retencionIRPF', 'activo', 'id_rol', 'id_country'];
 
     //private const string SELECT_FROM = "SELECT t.*, art.nombre_rol, ac.country_name FROM trabajadores t LEFT JOIN aux_rol_trabajador art ON art.id_rol = t.id_rol LEFT JOIN aux_countries ac ON ac.id = t.id_country";
     public function getTrabajadores(): array
@@ -128,34 +129,22 @@ class TrabajadorModel extends BaseDbModel
         return (int)ceil($this->getNumeroRegistros($filtros) / self::DEFAULT_ITEMS_QUANTITY);
     }
 
-    private function isEmpty(array $newTrabajador): array
+    public function find(string $username): array|false
     {
-        $valoresVacios = [];
-        foreach ($newTrabajador as $key => $value) {
-            if (empty(trim($value))) {
-                $valoresVacios[] = [$key => 'Introduce valores para este campo'];
-            }
-        }
-        return $valoresVacios;
-    }
-    private function checkNewTrabajador(array $newTrabajador): array
-    {
-        $errores = [];
-
-
-        if (!is_bool($newTrabajador['activo'])) {
-            $errores['activo'] = 'El valor activo no es válido';
-        }
-        return $errores;
+        $sql = self::SELECT . self::FROM . " WHERE username = :username";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
+        return $stmt->fetch();
     }
 
-    public function addTrabajador(array $newTrabajador): array
+    public function addTrabajador(array $newTrabajador): bool
     {
-        $errores = $this->checkNewTrabajador($newTrabajador);
-        if (empty($errores)) {
-            //TODO meter la inserción porque todo está bien
-        }
-        return $errores;
+        $sql = "insert into trabajadores (username, salarioBruto, retencionIRPF, activo, id_rol, id_country)
+                values (:username, :salarioBruto, :retencionIRPF, :activo, :id_rol, :id_country)";
+        $insertData = array_filter($newTrabajador, fn($key) => in_array($key, $this->allowedFields), ARRAY_FILTER_USE_KEY);
+        $insertData['activo'] = !empty($datos['activo']) ? 1 : 0;
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($insertData);
     }
     public function obtenerUnTrabajador(string $claveTrabajador): array
     {
@@ -163,5 +152,11 @@ class TrabajadorModel extends BaseDbModel
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $claveTrabajador]);
         return $stmt->fetch();
+    }
+    public function updateTrabajador(array $newTrabajador): bool
+    {
+        $sql="update trabajadores
+        set  =
+        where;"
     }
 }

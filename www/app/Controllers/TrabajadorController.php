@@ -69,6 +69,85 @@ class TrabajadorController extends BaseController
         $data['queryParamsPages'] = http_build_query($getPages);
         $this->view->showViews(array('templates/header.view.php', 'preparedStatement1.php', 'templates/footer.view.php'), $data);
     }
+    public function nuevoTrabajdor(array $input = [], array $errores = []): void
+    {
+        $data = array(
+            'titulo' => 'Datos nuevo trabajador',
+            'breadcrumb' => ['Inicio', 'Consultas simples'],
+            'input' => $input,
+            'errors' => $errores,
+        );
+        $modelRol = new AuxRolTrabajadorModel();
+        $modelCountry = new AuxCountryModel();
+        $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $data['roles'] = $modelRol->getAllRoles();
+        $data['countries'] = $modelCountry->getAllCountries();
+        $data['input'] = $input;
+        $this->view->showViews(array('templates/header.view.php', 'nuevoTrabajador.php', 'templates/footer.view.php'), $data);
+    }
+    public function doNuevoTrabajador(): void
+    {
+        $errores = $this->checkNuevoTrabajador($_POST);
+
+    }
+    private function checkNuevoTrabajador(array $datos): array
+    {
+        $errores = [];
+
+        if (empty($datos['username'])) {
+            $errores['username'] = 'Campo obligatorio';
+        } elseif (!preg_match('/^[\p{L}0-9_]{4,50}$/', $datos['username'])) {
+            $errores['username'] = 'Username solo acepta caracteres alfanuméricos y _. Longitud mínima: 4, máxima: 50';
+        } else {
+            $trabajadorModel = new TrabajadorModel();
+            $trabajador = $trabajadorModel->find($datos['username']);
+            if ($trabajador !== false) {
+                $errores['username'] = 'El nombre de usuario ya está en uso';
+            }
+        }
+
+        if (empty($datos['salarioBruto'])) {
+            $errores['salarioBruto'] = 'Campo obligatorio';
+        } elseif (!is_numeric($datos['salarioBruto'])) {
+            $errores['salarioBruto'] = 'Inserte un número';
+        } elseif ($datos['salarioBruto'] < 500) {
+            $errores['salarioBruto'] = 'El debe ser mayor que 500';
+        }
+
+        if (empty($datos['retencionIRPF'])) {
+            $errores['retencionIRPF'] = 'Campo obligatorio';
+        } elseif (!is_numeric($datos['retencionIRPF'])) {
+            $errores['retencionIRPF'] = 'Inserte un número';
+        } elseif ($datos['retencionIRPF'] < 0 || $datos['retencionIRPF'] > 100) {
+            $errores['retencionIRPF'] = 'La retención debe tener un valor comprendido entre 0 y 100';
+        }
+
+        if (empty($datos['id_rol'])) {
+            $errores['id_rol'] = 'Campo obligatorio';
+        } elseif (filter_var($datos['id_rol'], FILTER_VALIDATE_INT) === false) {
+            $errores['id_rol'] = 'Rol no válido';
+        } else {
+            $rolModel = new AuxRolTrabajadorModel();
+            $rol = $rolModel->find((int)$datos['id_rol']);
+            if ($rol === false) {
+                $errores['id_rol'] = 'Rol no válido';
+            }
+        }
+
+        if (empty($datos['id_country'])) {
+            $errores['id_country'] = 'Campo obligatorio';
+        } elseif (filter_var($datos['id_country'], FILTER_VALIDATE_INT) === false) {
+            $errores['id_country'] = 'País no válido';
+        } else {
+            $countryModel = new AuxCountryModel();
+            $country = $countryModel->find((int)$datos['id_country']);
+            if ($country === false) {
+                $errores['id_country'] = 'País no válido';
+            }
+        }
+
+        return $errores;
+    }
     public function editTrabajador(string $username): void
     {
         $data = array(

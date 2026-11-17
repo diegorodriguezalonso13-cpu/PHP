@@ -14,5 +14,12 @@ class AuxRolTrabajadorModel extends BaseDbModel
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
+    public function find(int $idRol): array|false
+    {
+        $sql = "SELECT * FROM `aux_rol_trabajador` WHERE `id_rol` = :idRol";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idRol' => $idRol]);
+        return $stmt->fetch();
+    }
 
 }
