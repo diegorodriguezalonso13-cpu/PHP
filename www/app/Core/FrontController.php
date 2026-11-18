@@ -297,10 +297,18 @@ class FrontController
         Route::add(
             '/preparedStatement1/new',
             function () {
-                $controlador = new \Com\Daw2\Controllers\NuevoTrabajadorController();
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
                 $controlador->nuevoTrabajdor();
             },
             'get'
+        );
+        Route::add(
+            '/preparedStatement1/new',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->doNuevoTrabajador();
+            },
+            'post'
         );
         Route::add(
             '/preparedStatement1/edit/([\p{L}0-9_]{4,50})',

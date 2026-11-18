@@ -9,7 +9,7 @@ declare(strict_types=1);
 <div class="row">
     <div class="col-12">
         <div class="card shadow mb-4">
-            <form method="get" action="">
+            <form method="post" action="">
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Campos</h6>
@@ -22,12 +22,18 @@ declare(strict_types=1);
                             <div class="mb-3">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" name="username" id="username" value="<?php echo $input['username'] ?? ''; ?>" />
+                                <p class="text-danger small">
+                                    <?php echo $errors['username'] ?? ''; ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="salarioBruto">Salario Bruto:</label>
-                                <input type="text" class="form-control" name="salario" id="salario" value="<?php echo $input['salario'] ?? ''; ?>" placeholder="1000,2000..."/>
+                                <input type="text" class="form-control" name="salarioBruto" id="salario" value="<?php echo $input['salarioBruto'] ?? ''; ?>" placeholder="1000,2000..."/>
+                                <p class="text-danger small">
+                                    <?php echo $errors['salarioBruto'] ?? ''; ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-12 col-lg-3">
@@ -43,33 +49,43 @@ declare(strict_types=1);
                                         <?php }
                                     };?>
                                 </select>
+                                <p class="text-danger small">
+                                    <?php echo $errors['id_rol'] ?? ''; ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="id_country">País:</label>
                                 <select name="id_country" id="id_country" class="form-control select2" data-placeholder="Afghanistan,Albania,...">
+                                    <option value=""selected>-</option>
                                     <?php foreach ($countries as $country) {
-                                        if (isset($input['id_country']) && in_array($country['id'], $input['id_country'])) { ?>
+                                        if (isset($input['id_country']) && $country['id']==$input['id_country']) { ?>
                                             <option value="<?php echo $country['id']; ?>" selected><?php echo $country['country_name']; ?></option>
                                         <?php } else { ?>
                                             <option value="<?php echo $country['id']?>"><?php echo $country['country_name'];?></option>
                                         <?php }
                                     };?>
                                 </select>
+                                <p class="text-danger small">
+                                    <?php echo $errors['id_country'] ?? ''; ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="retencionIRPF">Retención IRPF:</label>
-                                <input type="text" class="form-control" name="retencionIRPFMax" id="retencionIRPFMax" value="<?php echo $input['retencionIRPFMax'] ?? ''; ?>" placeholder="Entre 0 y 100, ambos inclusive" />
+                                <input type="text" class="form-control" name="retencionIRPF" id="retencionIRPF" value="<?php echo $input['retencionIRPF'] ?? ''; ?>" placeholder="Entre 0 y 100, ambos inclusive" />
+                                <p class="text-danger small">
+                                    <?php echo $errors['retencionIRPF'] ?? ''; ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="activo">Activo:</label>
                                 <div class="custom-control custom-switch" style="zoom: 1.4">
-                                    <input type="checkbox" class="custom-control-input" name="activo" id="activo" data-gtm-form-interact-field-id="0" checked>
+                                    <input type="checkbox" class="custom-control-input" name="activo" id="activo" value="1" data-gtm-form-interact-field-id="0" checked>
                                     <label class="custom-control-label" for="activo"></label>
                                 </div>
                             </div>
@@ -78,8 +94,9 @@ declare(strict_types=1);
                 </div>
                 <div class="card-footer">
                     <div class="col-12 text-right">
-                        <a href="/preparedStatement1/new" value="" name="reiniciar" class="btn btn-danger">Borrar</a>
-                        <input type="submit" value="Añadir" name="enviar" class="btn btn-primary ml-2"/>
+                        <a href="/preparedStatement1" class="btn btn-danger">Cancelar</a>
+                        <input type="submit" value="Añadir" class="btn btn-primary ml-2"/>
+                        <input type="submit" name="insertar_otro" value="Guardar e insertar otro" class="btn btn-primary ml-2"/>
                     </div>
                 </div>
             </form>

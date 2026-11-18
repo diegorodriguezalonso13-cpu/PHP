@@ -69,6 +69,7 @@ class TrabajadorController extends BaseController
         $data['queryParamsPages'] = http_build_query($getPages);
         $this->view->showViews(array('templates/header.view.php', 'preparedStatement1.php', 'templates/footer.view.php'), $data);
     }
+    //A PARTIR DE AQUÍ ESTÁ EL CÓDIGO PARA AÑADIR TRABAJADORES
     public function nuevoTrabajdor(array $input = [], array $errores = []): void
     {
         $data = array(
@@ -79,16 +80,28 @@ class TrabajadorController extends BaseController
         );
         $modelRol = new AuxRolTrabajadorModel();
         $modelCountry = new AuxCountryModel();
-        $input = filter_var_array($_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $data['roles'] = $modelRol->getAllRoles();
         $data['countries'] = $modelCountry->getAllCountries();
-        $data['input'] = $input;
         $this->view->showViews(array('templates/header.view.php', 'nuevoTrabajador.php', 'templates/footer.view.php'), $data);
     }
     public function doNuevoTrabajador(): void
     {
         $errores = $this->checkNuevoTrabajador($_POST);
-
+        if ($errores !== []) {
+            $this->nuevoTrabajdor(filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores);
+        } else {
+            $trabajadoresModel = new TrabajadorModel();
+            $res = $trabajadoresModel->addTrabajador($_POST);
+            if ($res !== true) {
+                echo 'Error';
+            } else {
+                if (!isset($_POST['insertar_otro'])) {
+                    header('Location: /preparedStatement1');
+                } else {
+                    header('Location: /preparedStatement1/new');
+                }
+            }
+        }
     }
     private function checkNuevoTrabajador(array $datos): array
     {
@@ -114,7 +127,7 @@ class TrabajadorController extends BaseController
             $errores['salarioBruto'] = 'El debe ser mayor que 500';
         }
 
-        if (empty($datos['retencionIRPF'])) {
+        if (empty($datos['retencionIRPF']) && $datos['retencionIRPF'] != 0) {
             $errores['retencionIRPF'] = 'Campo obligatorio';
         } elseif (!is_numeric($datos['retencionIRPF'])) {
             $errores['retencionIRPF'] = 'Inserte un número';
