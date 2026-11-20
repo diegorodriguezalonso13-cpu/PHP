@@ -117,6 +117,20 @@ declare(strict_types=1);
             <?php } ?>
             </tbody>
         </table>
+        <div class="card-footer">
+            <nav aria-label="Navegacion por paginas">
+                <?php
+
+                require_once '../app/Helpers/formulario_helper.php';
+                echo paginado(
+                        $lastPage,
+                        $page,
+                        $queryParamsPages
+                );
+                ?>
+
+            </nav>
+        </div>
     <?php } else { ?>
         <div>
             <p class="text-danger">
@@ -124,19 +138,5 @@ declare(strict_types=1);
             </p>
         </div>
     <?php }; ?>
-        <div class="card-footer">
-            <nav aria-label="Navegacion por paginas">
-             <?php
-
-                require_once '../app/Helpers/formulario_helper.php';
-                echo paginado(
-                    $lastPage,
-                    $page,
-                    $queryParamsPages
-                );
-            ?>
-
-            </nav>
-        </div>
     </div>
 

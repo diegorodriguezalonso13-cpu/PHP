@@ -318,6 +318,22 @@ class FrontController
             },
             'get'
         );
+        Route::add(
+            '/preparedStatement1/edit/([\p{L}0-9_]{4,50})',
+            function ($username) {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->doEditTrabajador($username);
+            },
+            'post'
+        );
+        Route::add(
+            '/preparedStatement1/delete/([\p{L}0-9_]{4,50})',
+            function ($username) {
+                $controlador = new \Com\Daw2\Controllers\TrabajadorController();
+                $controlador->deleteTrabajador($username);
+            },
+            'get'
+        );
 
         Route::add(
             '/demo-proveedores',

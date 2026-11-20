@@ -86,7 +86,7 @@ class TrabajadorController extends BaseController
     }
     public function doNuevoTrabajador(): void
     {
-        $errores = $this->checkNuevoTrabajador($_POST);
+        $errores = $this->checkNuevoTrabajador($_POST, false);
         if ($errores !== []) {
             $this->nuevoTrabajdor(filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores);
         } else {
@@ -103,19 +103,20 @@ class TrabajadorController extends BaseController
             }
         }
     }
-    private function checkNuevoTrabajador(array $datos): array
+    private function checkNuevoTrabajador(array $datos, bool $edicion): array
     {
         $errores = [];
-
-        if (empty($datos['username'])) {
-            $errores['username'] = 'Campo obligatorio';
-        } elseif (!preg_match('/^[\p{L}0-9_]{4,50}$/', $datos['username'])) {
-            $errores['username'] = 'Username solo acepta caracteres alfanuméricos y _. Longitud mínima: 4, máxima: 50';
-        } else {
-            $trabajadorModel = new TrabajadorModel();
-            $trabajador = $trabajadorModel->find($datos['username']);
-            if ($trabajador !== false) {
-                $errores['username'] = 'El nombre de usuario ya está en uso';
+        if (!$edicion) {
+            if (empty($datos['username'])) {
+                $errores['username'] = 'Campo obligatorio';
+            } elseif (!preg_match('/^[\p{L}0-9_]{4,50}$/', $datos['username'])) {
+                $errores['username'] = 'Username solo acepta caracteres alfanuméricos y _. Longitud mínima: 4, máxima: 50';
+            } else {
+                $trabajadorModel = new TrabajadorModel();
+                $trabajador = $trabajadorModel->find($datos['username']);
+                if ($trabajador !== false) {
+                    $errores['username'] = 'El nombre de usuario ya está en uso';
+                }
             }
         }
 
@@ -124,7 +125,7 @@ class TrabajadorController extends BaseController
         } elseif (!is_numeric($datos['salarioBruto'])) {
             $errores['salarioBruto'] = 'Inserte un número';
         } elseif ($datos['salarioBruto'] < 500) {
-            $errores['salarioBruto'] = 'El debe ser mayor que 500';
+            $errores['salarioBruto'] = 'El salario debe ser mayor que 500';
         }
 
         if (empty($datos['retencionIRPF']) && $datos['retencionIRPF'] != 0) {
@@ -161,19 +162,51 @@ class TrabajadorController extends BaseController
 
         return $errores;
     }
-    public function editTrabajador(string $username): void
+    public function editTrabajador(string $username, array $input = [], array $errores = []): void
     {
         $data = array(
             'titulo' => 'Trabajador',
             'breadcrumb' => ['Inicio', 'Consultas simples'],
+            'input' => $input,
+            'errors' => $errores,
         );
         $model = new TrabajadorModel();
         $modelRol = new AuxRolTrabajadorModel();
         $modelCountry = new AuxCountryModel();
         $data['roles'] = $modelRol->getAllRoles();
         $data['countries'] = $modelCountry->getAllCountries();
-        $input = $model->obtenerUnTrabajador($username);
-        $data['input'] = $input;
+        if ($input == []) {
+            $input = $model->obtenerUnTrabajador($username);
+            if ($input) {
+                $data['input'] = $input;
+            } else {
+                header('Location: /preparedstatement1');
+            }
+        }
         $this->view->showViews(array('templates/header.view.php', 'editarTrabajador.php', 'templates/footer.view.php'), $data);
+    }
+    public function doEditTrabajador(string $username): void
+    {
+        $errores = $this->checkNuevoTrabajador($_POST, true);
+        if ($errores !== []) {
+            $this->editTrabajador($username, filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores);
+        } else {
+            $trabajadoresModel = new TrabajadorModel();
+            $res = $trabajadoresModel->updateTrabajador($username, $_POST);
+            if ($res !== true) {
+                echo 'Error, trabajador no actualizado';
+            } else {
+                header('Location: /preparedStatement1');
+            }
+        }
+    }
+    public function deleteTrabajador(string $username): void
+    {
+        $trabajadoresModel = new TrabajadorModel();
+        if ($trabajadoresModel->deleteTrabajador($username)) {
+            header('Location: /preparedStatement1');
+        } else {
+            echo 'Error, no se pudo eliminar el trabajador';
+        }
     }
 }

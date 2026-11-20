@@ -142,22 +142,33 @@ class TrabajadorModel extends BaseDbModel
         $sql = "insert into trabajadores (username, salarioBruto, retencionIRPF, activo, id_rol, id_country)
                 values (:username, :salarioBruto, :retencionIRPF, :activo, :id_rol, :id_country)";
         $insertData = array_filter($newTrabajador, fn($key) => in_array($key, $this->allowedFields), ARRAY_FILTER_USE_KEY);
-        $insertData['activo'] = !empty($datos['activo']) ? 1 : 0;
+        $insertData['activo'] = !empty($newTrabajador['activo']) ? 1 : 0;
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($insertData);
     }
     public function obtenerUnTrabajador(string $claveTrabajador): array
     {
-        $sql ='SELECT * FROM trabajadores WHERE username = :username';
+        $sql = 'SELECT * FROM trabajadores WHERE username = :username';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $claveTrabajador]);
         return $stmt->fetch();
     }
-    public function updateTrabajador(array $newTrabajador): bool
+    public function updateTrabajador(string $username, array $newTrabajador): bool
     {
-        $sql="update trabajadores
-        set  =
-        where;";
-        return true;
+        $sql = "update trabajadores
+        set  salarioBruto=:salarioBruto,id_rol=:id_rol,id_country=:id_country,retencionIRPF=:retencionIRPF,activo=:activo where username=:username";
+
+        $updateData = array_filter($newTrabajador, fn($key) => in_array($key, $this->allowedFields), ARRAY_FILTER_USE_KEY);
+        $updateData['activo'] = !empty($newTrabajador['activo']) ? 1 : 0;
+        $updateData['username'] = $username;
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($updateData);
+    }
+
+    public function deleteTrabajador(string $username): bool
+    {
+        $sql = "delete from trabajadores where username = :username";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute(['username' => $username]);
     }
 }
