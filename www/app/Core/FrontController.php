@@ -287,14 +287,6 @@ class FrontController
             'get'
         );
         Route::add(
-            '/usuariosSistema',
-            function () {
-                $controlador = new \Com\Daw2\Controllers\UsuariosController();
-                $controlador->prepStmt2();
-            },
-            'get'
-        );
-        Route::add(
             '/preparedStatement1/new',
             function () {
                 $controlador = new \Com\Daw2\Controllers\TrabajadorController();
@@ -331,6 +323,54 @@ class FrontController
             function ($username) {
                 $controlador = new \Com\Daw2\Controllers\TrabajadorController();
                 $controlador->deleteTrabajador($username);
+            },
+            'get'
+        );
+        Route::add(
+            '/usuariosSistema',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->prepStmt2();
+            },
+            'get'
+        );
+        Route::add(
+            '/usuariosSistema/edit/([\p{L}0-9_]{4,50})',
+            function ($nombre) {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->editUsuario($nombre);
+            },
+            'get'
+        );
+        Route::add(
+            '/usuariosSistema/edit/([\p{L}0-9_]{4,50})',
+            function ($nombre) {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->doEditUsuario($nombre);
+            },
+            'post'
+        );
+        Route::add(
+            '/usuariosSistema/new/([\p{L}0-9_]{4,50})',
+            function ($nombre) {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->nuevoUsuario($nombre);
+            },
+            'get'
+        );
+        Route::add(
+            '/usuariosSistema/new/([\p{L}0-9_]{4,50})',
+            function ($nombre) {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->doNuevoUsuario($nombre);
+            },
+            'post'
+        );
+        Route::add(
+            '/usuariosSistema/delete/([\p{L}0-9_]{4,50})',
+            function ($nombre) {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->deleteUsuario($nombre);
             },
             'get'
         );
