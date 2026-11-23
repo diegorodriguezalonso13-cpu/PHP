@@ -35,4 +35,17 @@ class UsuariosController extends BaseController
         $data['input'] = $input;
         $this->view->showViews(array('templates/header.view.php', 'usuariosSistema.php', 'templates/footer.view.php'), $data);
     }
+    public function login(): void
+    {
+        $this->view->show('login.php');
+    }
+
+    public function nosequeLogin(): void
+    {
+        $model = new UsuariosModel();
+        $user = $model->verificarUsuario($_POST['email']);
+        if ($user && password_verify($_POST['pass'],$model['pass'])) {
+
+        }
+    }
 }

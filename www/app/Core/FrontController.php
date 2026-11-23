@@ -374,6 +374,30 @@ class FrontController
             },
             'get'
         );
+        Route::add(
+            '/tema',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\TemaController();
+                $controlador->tema();
+            },
+            'get'
+        );
+        Route::add(
+            '/tema',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\TemaController();
+                $controlador->guardarTema();
+            },
+            'post'
+        );
+        Route::add(
+            '/login',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->login();
+            },
+            'get'
+        );
 
         Route::add(
             '/demo-proveedores',
