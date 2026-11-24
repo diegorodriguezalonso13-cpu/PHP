@@ -398,6 +398,14 @@ class FrontController
             },
             'get'
         );
+        Route::add(
+            '/login',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\UsuariosController();
+                $controlador->nosequeLogin();
+            },
+            'post'
+        );
 
         Route::add(
             '/demo-proveedores',

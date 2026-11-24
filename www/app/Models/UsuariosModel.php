@@ -145,12 +145,11 @@ class UsuariosModel extends BaseDbModel
         return (int)ceil($this->getNumeroRegistros($filtros) / self::DEFAULT_ITEMS_QUANTITY);
     }
 
-    public function verificarUsuario(string $email): bool
+    public function verificarUsuario(string $email): false|array
     {
         $sql='SELECT * FROM usuarios WHERE email=:email';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['email' => $email]);
-
-        return true;
+        return $stmt->fetch();
     }
 }

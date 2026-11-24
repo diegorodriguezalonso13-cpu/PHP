@@ -44,8 +44,12 @@ class UsuariosController extends BaseController
     {
         $model = new UsuariosModel();
         $user = $model->verificarUsuario($_POST['email']);
-        if ($user && password_verify($_POST['pass'],$model['pass'])) {
-
+        if ($user && password_verify($_POST['pass'], $user['pass'])) {
+            session_regenerate_id();
+            $_SESSION['usuario'] = $user;
+            header("Location : /");
+        } else {
+            echo "Usuario o contraseña incorrectos";
         }
     }
 }
