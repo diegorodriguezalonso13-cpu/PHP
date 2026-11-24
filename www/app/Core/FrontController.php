@@ -375,6 +375,14 @@ class FrontController
             'get'
         );
         Route::add(
+            '/productos',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\ProductosController();
+                $controlador->prepStmt3();
+            },
+            'get'
+        );
+        Route::add(
             '/tema',
             function () {
                 $controlador = new \Com\Daw2\Controllers\TemaController();
