@@ -147,9 +147,23 @@ class UsuariosModel extends BaseDbModel
 
     public function verificarUsuario(string $email): false|array
     {
-        $sql='SELECT * FROM usuarios WHERE email=:email';
+        $sql='SELECT * FROM usuario_sistema WHERE email=:email';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['email' => $email]);
+        return $stmt->fetch();
+    }
+    public function verificarId(int $id): false|array
+    {
+        $sql='SELECT * FROM usuario_sistema WHERE id_usuario=:id';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
+    public function findByUsername(string $username): array|false
+    {
+        $sql = self::SELECT . self::FROM . " WHERE nombre = :username";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['username' => $username]);
         return $stmt->fetch();
     }
 }

@@ -136,7 +136,6 @@ declare(strict_types=1);
         <?php }; ?>
 <!--        //FIN TABLA CON RESULTADOS-->
 <!--        //INICIO NAVEGACIÓN POR PAGINAS-->
-<!--        TODO: Crear esas variables y debería ir bien-->
         <div class="card-footer">
             <nav aria-label="Navegacion por paginas">
                 <?php

@@ -45,7 +45,7 @@ declare(strict_types=1);
                         </div>
                     </div>
                 </div>
-                <p class="login-box-msg text-danger"><?php echo $error ?? ''; ?></p>
+                <p class="login-box-msg text-danger"><?php echo $error ? 'Datos inválidos' : ''; ?></p>
                 <div class="row">
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary btn-block float-right">Acceder</button>

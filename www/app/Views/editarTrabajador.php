@@ -3,9 +3,6 @@
 declare(strict_types=1);
 
 ?>
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
 <div class="row">
     <div class="col-12">
         <div class="card shadow mb-4">

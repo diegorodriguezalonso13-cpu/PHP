@@ -35,21 +35,85 @@ class UsuariosController extends BaseController
         $data['input'] = $input;
         $this->view->showViews(array('templates/header.view.php', 'usuariosSistema.php', 'templates/footer.view.php'), $data);
     }
-    public function login(): void
+    public function checkNuevoUsuario(array $datos, bool $edicion): array
     {
-        $this->view->show('login.php');
+        $errores = [];
+        if (!$edicion) {
+            if (empty($datos['username'])) {
+                $errores['username'] = 'Campo obligatorio';
+            } elseif (!preg_match('/^[\p{L}0-9_]{5,20}$/', $datos['username'])) {
+                $errores['username'] = 'Nombre de usuario no válido';
+            }else{
+                $modelo = new UsuariosModel();
+                $usuario = $modelo->findByUsername($datos['username']);
+                if($usuario){
+                    $errores['username'] = 'El nombre de usuario ya existe';
+                }
+            }
+        }
+        if (empty($datos['email'])) {
+            $errores['email'] = 'Campo obligatorio';
+        }
+        return $errores;
+    }
+    public function editUsuario(int $id, array $input = [], array $errores = []): void
+    {
+        $data = array(
+            'titulo' => 'Editar usuario',
+            'breadcrumb' => ['Inicio', 'Editar'],
+            'input' => $input,
+            'errors' => $errores,
+        );
+        $model = new UsuariosModel();
+        $data['roles'] = $model->getAllRoles();
+        $data['idiomas'] = ['es', 'en', 'gl'];
+        if ($input == []) {
+            $input = $model->verificarId($id);
+            if ($input) {
+                $data['input'] = $input;
+            } else {
+                header('Location: /preparedstatement1');
+            }
+        }
+        $this->view->showViews(array('templates/header.view.php', 'editarUsuario.php', 'templates/footer.view.php'), $data);
+    }
+    public function doEditUsuario(int $id): void
+    {
+        $errores = $this->checkNuevoUsuario($_POST, true);
+    }
+    public function nuevoUsuario(): void
+    {
+    }
+    public function doNuevoUsuario(): void
+    {
+    }
+    public function deleteUsuario(int $id): void
+    {
+    }
+    public function login(bool $error = false): void
+    {
+        $this->view->show('login.php', ['error' => $error]);
     }
 
     public function nosequeLogin(): void
     {
-        $model = new UsuariosModel();
-        $user = $model->verificarUsuario($_POST['email']);
-        if ($user && password_verify($_POST['pass'], $user['pass'])) {
-            session_regenerate_id();
-            $_SESSION['usuario'] = $user;
-            header("Location : /");
+        $error = false;
+        if (!empty($_POST['email']) && !empty($_POST['pass'])) {
+            $model = new UsuariosModel();
+            $user = $model->verificarUsuario($_POST['email']);
+            if ($user !== false && password_verify($_POST['pass'], $user['pass'])) {
+                session_regenerate_id(true);
+                $_SESSION['usuario'] = $user;
+            } else {
+                $error = true;
+            }
         } else {
-            echo "Usuario o contraseña incorrectos";
+            $error = true;
+        }
+        if (!$error) {
+            header('Location: /');
+        } else {
+            $this->login(true);
         }
     }
 }
