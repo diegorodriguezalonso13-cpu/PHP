@@ -43,19 +43,45 @@ class UsuariosController extends BaseController
                 $errores['username'] = 'Campo obligatorio';
             } elseif (!preg_match('/^[\p{L}0-9_]{5,20}$/', $datos['username'])) {
                 $errores['username'] = 'Nombre de usuario no válido';
-            }else{
+            } else {
                 $modelo = new UsuariosModel();
                 $usuario = $modelo->findByUsername($datos['username']);
-                if($usuario){
+                if ($usuario) {
                     $errores['username'] = 'El nombre de usuario ya existe';
                 }
             }
         }
         if (empty($datos['email'])) {
             $errores['email'] = 'Campo obligatorio';
+        } elseif (!preg_match('/^[\p{L}0-9._%+-]+@[\p{L}0-9-]+(?:\.[\p{L}0-9-]+)*\.\p{L}{2,}$/', $datos['email'])) {
+            $errores['email'] = 'Correo no valido';
+        } else {
+            $modelo = new UsuariosModel();
+            $usuario = $modelo->findByEmail($datos['email']);
+            if ($usuario) {
+                $errores['email'] = 'El correo ya existe';
+            }
+        }
+        if (empty($datos['idioma'])) {
+            $errores['idioma'] = 'Campo obligatorio';
+        } elseif (!in_array($datos['idioma'], ['es', 'en', 'gl'])) {
+            $errores['idioma'] = 'No se ha registrado un idioma válido';
+        }
+
+        if (empty($datos['id_rol'])) {
+            $errores['id_rol'] = 'Campo obligatorio';
+        } elseif (filter_var($datos['id_rol'], FILTER_VALIDATE_INT) === false) {
+            $errores['id_rol'] = 'Rol no válido';
+        } else {
+            $rolModel = new UsuariosModel();
+            $rol = $rolModel->getAllRoles();
+            if ($rol === false) {
+                $errores['id_rol'] = 'Rol no válido';
+            }
         }
         return $errores;
     }
+
     public function editUsuario(int $id, array $input = [], array $errores = []): void
     {
         $data = array(
@@ -80,6 +106,9 @@ class UsuariosController extends BaseController
     public function doEditUsuario(int $id): void
     {
         $errores = $this->checkNuevoUsuario($_POST, true);
+        if (empty($errores)) {
+
+        }
     }
     public function nuevoUsuario(): void
     {

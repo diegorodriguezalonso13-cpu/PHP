@@ -27,6 +27,14 @@ class UsuariosModel extends BaseDbModel
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
+    public function checkRol(string $rol): bool
+    {
+        $sql = "SELECT * FROM aux_rol WHERE rol = :rol";
+        $stmt = $this->pdo->query($sql);
+        $stmt->execute(['rol' => $rol]);
+        return (bool) $stmt->fetchAll();
+
+    }
     public function getAllIdiomas(): array
     {
         $sql = "SELECT DISTINCT us.idioma FROM usuario_sistema us";
@@ -164,6 +172,13 @@ class UsuariosModel extends BaseDbModel
         $sql = self::SELECT . self::FROM . " WHERE nombre = :username";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['username' => $username]);
+        return $stmt->fetch();
+    }
+    public function findByEmail(string $email): array|false
+    {
+        $sql = self::SELECT . self::FROM . " WHERE email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
         return $stmt->fetch();
     }
 }
