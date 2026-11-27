@@ -19,14 +19,24 @@ declare(strict_types=1);
                     <div class="row">
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
-                                <label for="name">Nombre:</label>
-                                <input type="text" class="form-control" name="name" id="name" value="<?php echo $input['nombre'] ?? ''; ?>" readonly/>
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" class="form-control" name="nombre" id="nombre" value="<?php echo $input['nombre'] ?? ''; ?>" />
+                                <p class="text-danger small">
+                                    <?php
+                                    echo $errors['nombre'] ?? '';
+                                    ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="salarioBruto">Email:</label>
                                 <input type="text" class="form-control" name="email" id="email" value="<?php echo $input['email'] ?? ''; ?>" />
+                                <p class="text-danger small">
+                                    <?php
+                                    echo $errors['email'] ?? '';
+                                    ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-12 col-lg-3">
@@ -38,6 +48,11 @@ declare(strict_types=1);
                                         <option value="<?php echo $idioma; ?>"<?php echo (isset($input['idioma']) && $input['idioma'] == $idioma) ? ' selected' : ''; ?>><?php echo $idioma; ?></option>
                                     <?php endforeach;?>
                                 </select>
+                                <p class="text-danger small">
+                                    <?php
+                                    echo $errors['idioma'] ?? '';
+                                    ?>
+                                </p>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
@@ -48,6 +63,37 @@ declare(strict_types=1);
                                             <option value="<?php echo $rol['id_rol']; ?>"<?php echo (isset($input['id_rol']) && $input['id_rol'] == $rol['id_rol']) ? ' selected' : ''; ?>><?php echo $rol['rol']; ?></option>
                                         <?php endforeach;?>
                                 </select>
+                                <p class="text-danger small">
+                                    <?php
+                                    echo $errors['id_rol'] ?? '';
+                                    ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="mb-3">
+                                <label for="pass">Contraseña:</label>
+                                <input type="password" class="form-control" name="pass" id="pass" value="" placeholder="Contraseña"/>
+                                <p class="text-danger small">
+                                    <?php
+                                    echo $errors['pass'] ?? '';
+                                    ?>
+                                </p>
+                                <input type="password" class="form-control" name="pass2" id="pass2" value="" placeholder="Repite contraseña"/>
+                                <p class="text-danger small">
+                                    <?php
+                                    echo $errors['pass2'] ?? '';
+                                    ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="mb-3">
+                                <label for="baja">Baja:</label>
+                                <div class="custom-control custom-switch" style="zoom: 1.4">
+                                    <input type="checkbox" class="custom-control-input" name="baja" id="baja" value="1" data-gtm-form-interact-field-id="0">
+                                    <label class="custom-control-label" for="baja"></label>
+                                </div>
                             </div>
                         </div>
                     </div>

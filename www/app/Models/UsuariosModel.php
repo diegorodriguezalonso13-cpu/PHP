@@ -13,7 +13,8 @@ class UsuariosModel extends BaseDbModel
     private const string FROM = " FROM usuario_sistema us LEFT JOIN aux_rol ar ON ar.id_rol = us.id_rol ";
     private const DEFAULT_ORDER_INDEX = 1;
     private const ORDER_FIELDS = ['us.nombre','us.email','us.idioma','ar.rol','us.last_date'];
-    private const DEFAULT_ITEMS_QUANTITY =1;
+    private const DEFAULT_ITEMS_QUANTITY = 1;
+    private array $allowedFields = ['nombre','email','idioma','id_rol','pass','baja'];
 
     public function getAllUsuarios(): array
     {
@@ -33,7 +34,6 @@ class UsuariosModel extends BaseDbModel
         $stmt = $this->pdo->query($sql);
         $stmt->execute(['rol' => $rol]);
         return (bool) $stmt->fetchAll();
-
     }
     public function getAllIdiomas(): array
     {
@@ -73,15 +73,15 @@ class UsuariosModel extends BaseDbModel
         }
 
         if (!empty($filtros['last_date_max'])) {
-            $fechaReciente= \DateTimeImmutable::createFromFormat('d/m/Y',$filtros['last_date_max']);
-            if($fechaReciente !==false) {
+            $fechaReciente = \DateTimeImmutable::createFromFormat('d/m/Y', $filtros['last_date_max']);
+            if ($fechaReciente !== false) {
                 $condiciones[] = " us.last_date <= :last_date_max ";
                 $values["last_date_max"] = $filtros['last_date_max'];
             }
         }
         if (!empty($filtros['last_date_min'])) {
-            $fechaAntigua= \DateTimeImmutable::createFromFormat('d/m/Y',$filtros['last_date_min']);
-            if($fechaAntigua !==false) {
+            $fechaAntigua = \DateTimeImmutable::createFromFormat('d/m/Y', $filtros['last_date_min']);
+            if ($fechaAntigua !== false) {
                 $condiciones[] = " us.last_date >= :last_date_min ";
                 $values["last_date_min"] = $filtros['last_date_in'];
             }
@@ -155,14 +155,14 @@ class UsuariosModel extends BaseDbModel
 
     public function verificarUsuario(string $email): false|array
     {
-        $sql='SELECT * FROM usuario_sistema WHERE email=:email';
+        $sql = 'SELECT * FROM usuario_sistema WHERE email=:email';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['email' => $email]);
         return $stmt->fetch();
     }
     public function verificarId(int $id): false|array
     {
-        $sql='SELECT * FROM usuario_sistema WHERE id_usuario=:id';
+        $sql = 'SELECT * FROM usuario_sistema WHERE id_usuario=:id';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
@@ -180,5 +180,17 @@ class UsuariosModel extends BaseDbModel
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['email' => $email]);
         return $stmt->fetch();
+    }
+    public function editUsuario(int $id, array $data): bool
+    {
+        $sql = "update usuario_sistema
+        set  email=:email,id_rol=:id_rol,idioma=:idioma,pass=:pass,baja=:baja where id_usuario=:id_usuario";
+
+        $updateData = array_filter($data, fn($key) => in_array($key, $this->allowedFields), ARRAY_FILTER_USE_KEY);
+        $updateData['baja'] = empty($data['baja']) ? 1 : 0;
+        $updateData['pass'] = password_hash($data['pass'], PASSWORD_DEFAULT);
+        $updateData['id_usuario'] = $id;
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($updateData);
     }
 }

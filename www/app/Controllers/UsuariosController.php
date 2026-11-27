@@ -38,19 +38,19 @@ class UsuariosController extends BaseController
     public function checkNuevoUsuario(array $datos, bool $edicion): array
     {
         $errores = [];
-        if (!$edicion) {
-            if (empty($datos['username'])) {
-                $errores['username'] = 'Campo obligatorio';
-            } elseif (!preg_match('/^[\p{L}0-9_]{5,20}$/', $datos['username'])) {
-                $errores['username'] = 'Nombre de usuario no válido';
-            } else {
-                $modelo = new UsuariosModel();
-                $usuario = $modelo->findByUsername($datos['username']);
-                if ($usuario) {
-                    $errores['username'] = 'El nombre de usuario ya existe';
-                }
+
+        if (empty($datos['nombre'])) {
+            $errores['nombre'] = 'Campo obligatorio';
+        } elseif (!preg_match('/^[\p{L}0-9_]{5,20}$/', $datos['nombre'])) {
+            $errores['nombre'] = 'Nombre de usuario no válido';
+        } else {
+            $modelo = new UsuariosModel();
+            $usuario = $modelo->findByUsername($datos['nombre']);
+            if ($usuario !==false) {
+                $errores['nombre'] = 'El nombre de usuario ya existe';
             }
         }
+
         if (empty($datos['email'])) {
             $errores['email'] = 'Campo obligatorio';
         } elseif (!preg_match('/^[\p{L}0-9._%+-]+@[\p{L}0-9-]+(?:\.[\p{L}0-9-]+)*\.\p{L}{2,}$/', $datos['email'])) {
@@ -58,10 +58,17 @@ class UsuariosController extends BaseController
         } else {
             $modelo = new UsuariosModel();
             $usuario = $modelo->findByEmail($datos['email']);
-            if ($usuario) {
+            if ($usuario !== false) {
                 $errores['email'] = 'El correo ya existe';
             }
         }
+
+        if (!empty($datos['pass']) && !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $datos['pass'])) {
+            $errores['pass'] = 'La contrseña debe contener al menos una mayúscula, una minúscula y un número, longitud mínima de 8 caracteres';
+        } elseif ($datos['pass'] != $datos['pass2']) {
+            $errores['pass2'] = 'Las contraseñas no coinciden';
+        }
+
         if (empty($datos['idioma'])) {
             $errores['idioma'] = 'Campo obligatorio';
         } elseif (!in_array($datos['idioma'], ['es', 'en', 'gl'])) {
@@ -74,7 +81,7 @@ class UsuariosController extends BaseController
             $errores['id_rol'] = 'Rol no válido';
         } else {
             $rolModel = new UsuariosModel();
-            $rol = $rolModel->getAllRoles();
+            $rol = $rolModel->checkRol($datos['id_rol']);
             if ($rol === false) {
                 $errores['id_rol'] = 'Rol no válido';
             }
@@ -107,7 +114,15 @@ class UsuariosController extends BaseController
     {
         $errores = $this->checkNuevoUsuario($_POST, true);
         if (empty($errores)) {
-
+            $model = new UsuariosModel();
+            $res = $model->editUsuario($id, $_POST);
+            if ($res !== true) {
+                echo 'Error, no se pudo actualizar el usuario';
+            } else {
+                header('Location: /usuariosSistema');
+            }
+        } else {
+            $this->editUsuario($id, filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS), $errores);
         }
     }
     public function nuevoUsuario(): void
